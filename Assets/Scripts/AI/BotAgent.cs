@@ -66,6 +66,7 @@ public partial class BotAgent : MonoBehaviour
     private int lastSafeCheckpointIndex;
 
     private readonly HashSet<GameObject> collectedCoins = new HashSet<GameObject>();
+    private readonly HashSet<GameObject> consumedBombs = new HashSet<GameObject>();
 
     private void Awake()
     {
@@ -104,6 +105,7 @@ public partial class BotAgent : MonoBehaviour
             rewardSystem.AddTimePenalty(Time.deltaTime);
 
         ScanEnvironment();
+        TryHandlePickupsAndHazardsByOverlap();
         TryCompleteCurrentCheckpointByOverlap();
         UpdateState();
         ApplyProgressReward();

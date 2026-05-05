@@ -27,10 +27,7 @@ public partial class BotAgent
             GameObject coinObject = coin != null ? coin.gameObject : FindTaggedObject(other, "Coin");
             int value = coin != null ? coin.value : 1;
 
-            CollectCoin(coinObject, value);
-
-            if (coinObject != null)
-                Destroy(coinObject);
+            HandleCoinPickup(coinObject, value);
 
             return;
         }
@@ -41,16 +38,140 @@ public partial class BotAgent
         {
             GameObject bombObject = bomb != null ? bomb.gameObject : FindTaggedObject(other, "Bomb");
 
-            if (rewardSystem != null)
-                rewardSystem.AddBombPenalty();
+            HandleBombHit(bombObject);
+        }
+    }
 
-            TeleportToLastSafeCheckpoint();
+    private void TryHandlePickupsAndHazardsByOverlap()
+    {
+        if (!TryGetBotBounds(out Bounds botBounds))
+            return;
 
-            if (nearestBomb != null && bombObject != null && nearestBomb.IsChildOf(bombObject.transform))
-                nearestBomb = null;
+        if (TryHandleBombOverlap(botBounds))
+            return;
 
-            if (bombObject != null)
-                Destroy(bombObject);
+        TryHandleCoinOverlap(botBounds);
+    }
+
+    private bool TryHandleBombOverlap(Bounds botBounds)
+    {
+        Bomb[] bombs = FindObjectsByType<Bomb>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+
+        foreach (Bomb bomb in bombs)
+        {
+            if (bomb == null)
+                continue;
+
+            if (!TryGetObjectBounds(bomb.gameObject, out Bounds bombBounds))
+                continue;
+
+            if (!botBounds.Intersects(bombBounds))
+                continue;
+
+            HandleBombHit(bomb.gameObject);
+            return true;
+        }
+
+        foreach (GameObject bombObject in FindObjectsWithTagSafe("Bomb"))
+        {
+            if (bombObject == null)
+                continue;
+
+            if (!TryGetObjectBounds(bombObject, out Bounds bombBounds))
+                continue;
+
+            if (!botBounds.Intersects(bombBounds))
+                continue;
+
+            HandleBombHit(bombObject);
+            return true;
+        }
+
+        return false;
+    }
+
+    private void TryHandleCoinOverlap(Bounds botBounds)
+    {
+        Coin[] coins = FindObjectsByType<Coin>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+
+        foreach (Coin coin in coins)
+        {
+            if (coin == null || collectedCoins.Contains(coin.gameObject))
+                continue;
+
+            if (!TryGetObjectBounds(coin.gameObject, out Bounds coinBounds))
+                continue;
+
+            if (!botBounds.Intersects(coinBounds))
+                continue;
+
+            HandleCoinPickup(coin.gameObject, coin.value);
+            return;
+        }
+
+        foreach (GameObject coinObject in FindObjectsWithTagSafe("Coin"))
+        {
+            if (coinObject == null || collectedCoins.Contains(coinObject))
+                continue;
+
+            if (!TryGetObjectBounds(coinObject, out Bounds coinBounds))
+                continue;
+
+            if (!botBounds.Intersects(coinBounds))
+                continue;
+
+            HandleCoinPickup(coinObject, 1);
+            return;
+        }
+    }
+
+    private void HandleCoinPickup(GameObject coinObject, int value)
+    {
+        CollectCoin(coinObject, value);
+
+        if (coinObject != null)
+            Destroy(coinObject);
+    }
+
+    private void HandleBombHit(GameObject bombObject)
+    {
+        if (bombObject == null || consumedBombs.Contains(bombObject))
+            return;
+
+        consumedBombs.Add(bombObject);
+
+        if (rewardSystem != null)
+            rewardSystem.AddBombPenalty();
+
+        TeleportToLastSafeCheckpoint();
+
+        if (nearestBomb != null && bombObject != null && nearestBomb.IsChildOf(bombObject.transform))
+            nearestBomb = null;
+
+        if (bombObject != null)
+            Destroy(bombObject);
+    }
+
+    private bool TryGetObjectBounds(GameObject obj, out Bounds bounds)
+    {
+        bounds = new Bounds(Vector3.zero, Vector3.zero);
+
+        if (obj == null)
+            return false;
+
+        return TryGetColliderBounds(obj.transform, out bounds) ||
+            TryGetBounds(obj.transform, out bounds);
+    }
+
+    private GameObject[] FindObjectsWithTagSafe(string tag)
+    {
+        try
+        {
+            return GameObject.FindGameObjectsWithTag(tag);
+        }
+        catch
+        {
+            return new GameObject[0];
         }
     }
 
@@ -205,7 +326,7 @@ public partial class BotAgent
         bot.ResetSpeedToDefault();
 
         if (currentTarget != null)
-            previousDistanceToTarget = Vector3.Distance(transform.position, currentTarget.position);
+            previousDistanceToTarget = Vector3.Distance(transform.position, GetCurrentTargetPosition());
     }
 
     private void ResetToStart()
