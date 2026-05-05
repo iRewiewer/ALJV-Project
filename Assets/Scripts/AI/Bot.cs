@@ -7,10 +7,11 @@ public class Bot : MonoBehaviour
 	public float minSpeed = 10f;
 	public float maxSpeed = 500f;
 	public float acceleration = 20f;
+	public float brakingAcceleration = 70f;
 
 	[Header("Rotation")]
 	public float pitchSpeed = 60f;
-	public float yawSpeed = 25f;
+	public float yawSpeed = 45f;
 	public float maxRollAngle = 65f;
 	public float rollReturnSpeed = 2.5f;
 	public float inputSmooth = 6f;
@@ -21,6 +22,10 @@ public class Bot : MonoBehaviour
 
 	[Header("Attributes")]
 	public float currentSpeed;
+
+	public float CurrentSpeed => currentSpeed;
+	public float MinSpeed => minSpeed;
+	public float MaxSpeed => maxSpeed;
 
 	private TMP_Text nameText;
 	private Camera targetCamera;
@@ -127,7 +132,7 @@ public class Bot : MonoBehaviour
 		if (accelerating)
 			currentSpeed += acceleration * Time.deltaTime;
 		else if (braking)
-			currentSpeed -= acceleration * Time.deltaTime;
+			currentSpeed -= brakingAcceleration * Time.deltaTime;
 
 		currentSpeed = Mathf.Clamp(currentSpeed, minSpeed, maxSpeed);
 	}

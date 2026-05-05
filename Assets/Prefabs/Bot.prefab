@@ -11,6 +11,11 @@ GameObject:
   - component: {fileID: 2866100190869961825}
   - component: {fileID: 7105088909526202178}
   - component: {fileID: 3029371604352651368}
+  - component: {fileID: 8139051245904977732}
+  - component: {fileID: 3454724268715357022}
+  - component: {fileID: 7241922556243312653}
+  - component: {fileID: 4650912055822890209}
+  - component: {fileID: 2532117649611227395}
   m_Layer: 0
   m_Name: Bot
   m_TagString: Player
@@ -28,7 +33,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 800, y: 100, z: 1800}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8984528594248245470}
@@ -71,12 +76,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 3558675614407549731}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b840c6bc882904f4fb1733b62d0a76c3, type: 3}
+  m_Script: {fileID: 11500000, guid: 5041ec4d616e673458cbb7a8175bf040, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bot
   minSpeed: 10
   maxSpeed: 500
   acceleration: 20
+  brakingAcceleration: 70
   pitchSpeed: 60
   yawSpeed: 25
   maxRollAngle: 65
@@ -85,6 +91,149 @@ MonoBehaviour:
   invertedControls: 1
   usePlayerInputForTesting: 0
   currentSpeed: 0
+--- !u!114 &8139051245904977732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3558675614407549731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6135f5693ddc9b740b8ee4d776bd94da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BotRewardSystem
+  checkpointReward: 10
+  coinReward: 8
+  bombPenalty: -5
+  timePenaltyPerSecond: -0.1
+  progressRewardMultiplier: 0.02
+  alignedSpeedReward: 0.03
+  wrongDirectionPenalty: -0.03
+  totalReward: 0
+  verboseLogs: 0
+--- !u!114 &3454724268715357022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3558675614407549731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef6fef24fcdd5eb45baa8ccac9054cdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BotAgent
+  aiType: 0
+  autoFindCheckpoints: 1
+  checkpoints: []
+  currentCheckpointIndex: 0
+  passedCheckpointCount: 0
+  checkpointPassDotThreshold: 0.15
+  coinDetectionRadius: 140
+  bombDetectionRadius: 90
+  checkpointReachDistance: 180
+  recoverDistanceFromTrack: 400
+  recoverAngleFromTarget: 105
+  recoveryPastCheckpointDistance: 90
+  recoverySetupDistance: 300
+  recoverySetupReachedDistance: 90
+  recoveryReadyAngle: 35
+  recoveryMinCheckpointDistance: 140
+  coinInfluence: 0.12
+  minCoinDistance: 25
+  maxCoinAngle: 45
+  bombAvoidDistance: 80
+  bombAvoidStrength: 85
+  bombAvoidSideRange: 28
+  bombAvoidVerticalRange: 22
+  currentState: 0
+  currentTarget: {fileID: 0}
+  nearestCheckpoint: {fileID: 0}
+  nearestCoin: {fileID: 0}
+  nearestBomb: {fileID: 0}
+  recoveringCheckpoint: 0
+  recoveryApproachPoint: {x: 0, y: 0, z: 0}
+--- !u!114 &7241922556243312653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3558675614407549731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6135f5693ddc9b740b8ee4d776bd94da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BotRewardSystem
+  checkpointReward: 10
+  coinReward: 2
+  bombPenalty: -5
+  timePenaltyPerSecond: -0.1
+  progressRewardMultiplier: 0.02
+  alignedSpeedReward: 0.03
+  wrongDirectionPenalty: -0.03
+  totalReward: 0
+  verboseLogs: 0
+--- !u!114 &4650912055822890209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3558675614407549731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9dae7a7b4621cf4e83e632937f90e9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FSMBotBrain
+  yawSensitivity: 3.5
+  pitchSensitivity: 2.5
+  maxYawInput: 1
+  maxPitchInput: 0.45
+  inputDeadZone: 0.02
+  cruiseSpeed: 120
+  turnSpeed: 55
+  checkpointSpeed: 45
+  avoidSpeed: 65
+  slowAngle: 35
+  hardTurnAngle: 70
+  recoverySpeed: 35
+  slowCheckpointDistance: 180
+  speedTolerance: 5
+  debugLogs: 0
+--- !u!114 &2532117649611227395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3558675614407549731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a517637750296ea40b8942bfb3093a02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RLBotBrain
+  decisionInterval: 0.4
+  explorationRate: 0.15
+  learningRate: 0.25
+  discountFactor: 0.85
+  yawSensitivity: 3
+  pitchSensitivity: 2
+  maxYawInput: 1
+  maxPitchInput: 0.45
+  actionYawBias: 0.35
+  actionPitchBias: 0.25
+  cruiseSpeed: 110
+  turnSpeed: 55
+  checkpointSpeed: 45
+  avoidSpeed: 65
+  slowAngle: 35
+  hardTurnAngle: 70
+  recoverySpeed: 35
+  slowCheckpointDistance: 180
+  speedTolerance: 5
+  debugLogs: 0
 --- !u!1 &4442959472423130235
 GameObject:
   m_ObjectHideFlags: 0

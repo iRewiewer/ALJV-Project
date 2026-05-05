@@ -231,10 +231,20 @@ public class RaceManager : MonoBehaviour
 			return;
 		}
 
+		FinishRace("FINISHED! All checkpoints passed.");
+	}
+
+	public void FinishRace(string message)
+	{
+		if (finished)
+		{
+			return;
+		}
+
 		finished = true;
 		isPaused = false;
 		Time.timeScale = 0f;
 
-		Debug.Log("FINISHED! All checkpoints passed.");
+		Debug.Log(message);
 	}
 }

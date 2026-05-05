@@ -39,4 +39,16 @@ public class PauseMenu : MonoBehaviour
 	{
 		botManager.HandleBots(BotOp.Remove, botManager.MAX_BOTS);
 	}
+
+	public void SwitchViewToBot()
+	{
+		if (botManager != null)
+			botManager.SwitchViewToBot();
+	}
+
+	public void ToggleBotAIGizmos()
+	{
+		if (botManager != null)
+			botManager.ToggleBotAIGizmos();
+	}
 }

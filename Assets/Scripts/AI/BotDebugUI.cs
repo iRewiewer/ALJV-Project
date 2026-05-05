@@ -6,9 +6,13 @@ public class BotDebugUI : MonoBehaviour
     [Header("UI")]
     public TMP_Text debugText;
 
+    [Header("References")]
+    public BotManager botManager;
+
     [Header("Settings")]
     public bool showDebug = true;
     public float refreshRate = 0.15f;
+    public int trackedBotIndex;
 
     private float refreshTimer;
     private BotAgent trackedAgent;
@@ -17,10 +21,7 @@ public class BotDebugUI : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-            showDebug = !showDebug;
-
-        refreshTimer -= Time.deltaTime;
+        refreshTimer -= Time.unscaledDeltaTime;
 
         if (refreshTimer > 0f)
             return;
@@ -33,16 +34,51 @@ public class BotDebugUI : MonoBehaviour
 
     private void RefreshReferences()
     {
-        if (trackedAgent != null && trackedBot != null && trackedReward != null)
+        if (botManager == null)
+            botManager = FindFirstObjectByType<BotManager>();
+
+        trackedAgent = null;
+        trackedBot = null;
+        trackedReward = null;
+
+        GameObject botObject = GetTrackedBotObject();
+
+        if (botObject == null)
             return;
 
-        trackedAgent = FindFirstObjectByType<BotAgent>();
+        trackedAgent = botObject.GetComponent<BotAgent>();
+        trackedBot = botObject.GetComponent<Bot>();
+        trackedReward = botObject.GetComponent<BotRewardSystem>();
+    }
 
-        if (trackedAgent == null)
-            return;
+    private GameObject GetTrackedBotObject()
+    {
+        if (botManager == null)
+            return GetFirstSceneBot();
 
-        trackedBot = trackedAgent.GetComponent<Bot>();
-        trackedReward = trackedAgent.GetComponent<BotRewardSystem>();
+        if (botManager.BotCount == 0)
+            return null;
+
+        trackedBotIndex = Mathf.Clamp(trackedBotIndex, 0, botManager.BotCount - 1);
+
+        GameObject botObject = botManager.GetBotObject(trackedBotIndex);
+
+        if (botObject != null)
+            return botObject;
+
+        return GetFirstSceneBot();
+    }
+
+    private GameObject GetFirstSceneBot()
+    {
+        BotAgent firstAgent = FindFirstObjectByType<BotAgent>();
+
+        if (firstAgent != null)
+            return firstAgent.gameObject;
+
+        Bot firstBot = FindFirstObjectByType<Bot>();
+
+        return firstBot != null ? firstBot.gameObject : null;
     }
 
     private void UpdateDebugText()
@@ -56,46 +92,51 @@ public class BotDebugUI : MonoBehaviour
             return;
         }
 
-        if (trackedAgent == null)
+        if (trackedBot == null)
         {
             debugText.text =
                 "BOT DEBUG\n" +
-                "No bot spawned.\n" +
-                "Press B to spawn bot.";
+                "Bots: 0\n" +
+                "Use pause menu to add bot.";
             return;
         }
 
-        string targetName = trackedAgent.currentTarget != null
-            ? trackedAgent.currentTarget.name
-            : "None";
+        string botName = trackedBot.gameObject.name;
+        string stateName = trackedAgent != null ? trackedAgent.currentState.ToString() : "No Agent";
+        string aiType = trackedAgent != null ? trackedAgent.aiType.ToString() : "None";
+        string targetName = GetTransformName(trackedAgent != null ? trackedAgent.currentTarget : null);
+        string nearestCheckpointName = GetTransformName(trackedAgent != null ? trackedAgent.nearestCheckpoint : null);
+        string coinName = GetTransformName(trackedAgent != null ? trackedAgent.nearestCoin : null);
+        string bombName = GetTransformName(trackedAgent != null ? trackedAgent.nearestBomb : null);
 
-        string coinName = trackedAgent.nearestCoin != null
-            ? trackedAgent.nearestCoin.name
-            : "None";
+        int checkpointIndex = trackedAgent != null ? trackedAgent.currentCheckpointIndex : -1;
+        int passedCheckpoints = trackedAgent != null ? trackedAgent.passedCheckpointCount : 0;
+        int checkpointCount = trackedAgent != null && trackedAgent.checkpoints != null
+            ? trackedAgent.checkpoints.Length
+            : 0;
 
-        string bombName = trackedAgent.nearestBomb != null
-            ? trackedAgent.nearestBomb.name
-            : "None";
-
-        float speed = trackedBot != null
-            ? trackedBot.CurrentSpeed
-            : 0f;
-
-        float reward = trackedReward != null
-            ? trackedReward.totalReward
-            : 0f;
+        float speed = trackedBot.CurrentSpeed;
+        float reward = trackedReward != null ? trackedReward.totalReward : 0f;
+        int botCount = botManager != null ? botManager.BotCount : 1;
 
         debugText.text =
             "BOT DEBUG\n" +
-            $"State: {trackedAgent.currentState}\n" +
-            $"Checkpoint Index: {trackedAgent.currentCheckpointIndex}\n" +
+            $"Bots: {botCount}\n" +
+            $"Tracked: {trackedBotIndex + 1}/{Mathf.Max(botCount, 1)} {botName}\n" +
+            $"AI: {aiType}\n" +
+            $"State: {stateName}\n" +
+            $"Checkpoint: {checkpointIndex}/{checkpointCount}\n" +
+            $"Passed CP: {passedCheckpoints}/{checkpointCount}\n" +
             $"Target: {targetName}\n" +
-            $"Nearest Coin: {coinName}\n" +
-            $"Nearest Bomb: {bombName}\n" +
+            $"Nearest CP: {nearestCheckpointName}\n" +
+            $"Coin: {coinName}\n" +
+            $"Bomb: {bombName}\n" +
             $"Speed: {speed:F1}\n" +
-            $"Reward: {reward:F1}\n\n" +
-            "B = Spawn Bot\n" +
-            "M = Remove Bot\n" +
-            "P = Toggle Debug UI";
+            $"Reward: {reward:F1}";
+    }
+
+    private string GetTransformName(Transform target)
+    {
+        return target != null ? target.name : "None";
     }
 }
