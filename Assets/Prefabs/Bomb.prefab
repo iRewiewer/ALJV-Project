@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7070083539939355350}
   m_Layer: 0
   m_Name: Bomb
-  m_TagString: Untagged
+  m_TagString: Bomb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -67,8 +67,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78c3c756d0009bc49b69d73ef6933c8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bobAmplitude: 1.5
-  bobSpeed: 1.8
+  bombAmplitude: 1.5
+  bombSpeed: 1.8
 --- !u!1001 &4576171798044137914
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,40 +1,78 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
 	public GameObject portalSurface;
 	public float rotationSpeed = 80f;
+	public int checkpointIndex = -1;
 
-	private bool passed;
-	private bool isDisabled = false;
+	private readonly HashSet<Transform> passedRoots = new HashSet<Transform>();
 
 	void Update()
 	{
-		if(!isDisabled)
-		{
-			portalSurface.gameObject.transform.Rotate(0f, 0f, Time.deltaTime * rotationSpeed, Space.Self);
-		}
+		if (portalSurface != null && portalSurface.activeSelf)
+			portalSurface.transform.Rotate(0f, 0f, Time.deltaTime * rotationSpeed, Space.Self);
 	}
 
 	void OnTriggerEnter(Collider other)
 	{
-		if (passed)
+		BotAgent botAgent = other.GetComponent<BotAgent>();
+
+		if (botAgent == null)
+			botAgent = other.GetComponentInParent<BotAgent>();
+
+		if (botAgent != null)
+		{
+			botAgent.TryCompleteCheckpointIndex(GetCheckpointIndex());
 			return;
+		}
 
 		if (RaceManager.Instance == null)
 			return;
 
-		if (!other.transform.root.CompareTag("Player"))
+		Transform root = other.transform.root;
+
+		if (!root.CompareTag("Player"))
 			return;
 
-		passed = true;
+		if (passedRoots.Contains(root))
+			return;
+
+		passedRoots.Add(root);
+
 		RaceManager.Instance.SetLastCheckpoint(transform);
 		RaceManager.Instance.RegisterCheckpointPassed();
 
-		// disable collider and portal VFX after passing
-		gameObject.GetComponent<BoxCollider>().enabled = false;
-		portalSurface.SetActive(false);
+		// Just hide the portal visual, keep trigger alive.
+		if (portalSurface != null)
+			portalSurface.SetActive(false);
+	}
 
-		isDisabled = true;
+	public int GetCheckpointIndex()
+	{
+		if (checkpointIndex >= 0)
+			return checkpointIndex;
+
+		Checkpoint[] checkpoints = FindObjectsByType<Checkpoint>(
+			FindObjectsInactive.Exclude,
+			FindObjectsSortMode.None
+		);
+
+		Array.Sort(checkpoints, CompareByHierarchyOrder);
+
+		for (int i = 0; i < checkpoints.Length; i++)
+		{
+			if (checkpoints[i] == this)
+				return i;
+		}
+
+		return 0;
+	}
+
+	private int CompareByHierarchyOrder(Checkpoint a, Checkpoint b)
+	{
+		return a.transform.GetSiblingIndex().CompareTo(b.transform.GetSiblingIndex());
 	}
 }

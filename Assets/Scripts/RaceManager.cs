@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RaceManager : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class RaceManager : MonoBehaviour
 	public FollowCamera followCamera;
 	public Transform startPoint;
 	public Transform finishPoint;
+	public GameObject pauseMenu;
+	public BotManager botManager;
 
 	[Header("Race State")]
 	public int totalCheckpoints;
@@ -16,13 +19,18 @@ public class RaceManager : MonoBehaviour
 	public int score;
 	public int totalCoins;
 
+	public bool isPaused;
 	public float elapsedTime;
 	public bool finished;
 
-	private Vector3 lastCheckpointPos;
-	private Quaternion lastCheckpointRot;
+	[Header("Settings")]
+	public KeyCode pauseKey = KeyCode.P;
+	public KeyCode restartKey = KeyCode.R;
 
-	void Awake()
+	public Vector3 lastCheckpointPos;
+	public Quaternion lastCheckpointRot;
+
+	private void Awake()
 	{
 		if (Instance != null && Instance != this)
 		{
@@ -31,32 +39,87 @@ public class RaceManager : MonoBehaviour
 		}
 
 		Instance = this;
+		Time.timeScale = 1f;
+
 		totalCoins = FindObjectsByType<Coin>(FindObjectsInactive.Include, FindObjectsSortMode.None).Length;
+
+		if (pauseMenu != null)
+			pauseMenu.SetActive(false);
 	}
 
-	void Start()
+	private void Start()
 	{
 		SaveStartFromPlayer();
 		RecountCheckpointsInScene();
+
+		if (botManager != null && startPoint != null)
+			botManager.SetSpawnPoint(startPoint);
 	}
 
-	void Update()
+	private void Update()
 	{
-		if (!finished)
+		if (!finished && !isPaused)
 			elapsedTime += Time.deltaTime;
 
-		if (finished && Input.GetKeyDown(KeyCode.P))
+		if (Input.GetKeyDown(restartKey))
+			RestartRace();
+
+		if (Input.GetKeyDown(pauseKey))
+			TogglePause();
+	}
+
+	public void TogglePause()
+	{
+		if (finished)
 		{
-			Time.timeScale = 1f;
-			UnityEngine.SceneManagement.SceneManager.LoadScene(
-				UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex
-			);
+			RestartRace();
+			return;
+		}
+
+		if (isPaused)
+		{
+			ResumeRace();
+		}
+		else
+		{
+			PauseRace();
 		}
 	}
+
+	public void PauseRace()
+	{
+		isPaused = true;
+		Time.timeScale = 0f;
+
+		if (pauseMenu != null)
+		{
+			pauseMenu.SetActive(true);
+		}
+	}
+
+	public void ResumeRace()
+	{
+		isPaused = false;
+		Time.timeScale = 1f;
+
+		if (pauseMenu != null)
+		{
+			pauseMenu.SetActive(false);
+		}
+	}
+
+	public void RestartRace()
+	{
+		Time.timeScale = 1f;
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+	}
+
 	public void SaveStartFromPlayer()
 	{
 		if (player == null || startPoint == null)
+		{
 			return;
+		}
 
 		startPoint.position = player.position;
 		startPoint.rotation = player.rotation;
@@ -65,43 +128,71 @@ public class RaceManager : MonoBehaviour
 		lastCheckpointRot = startPoint.rotation;
 	}
 
-
 	public void Respawn()
 	{
 		if (player == null || startPoint == null)
+		{
 			return;
+		}
 
 		player.position = startPoint.position;
 		player.rotation = startPoint.rotation;
 
 		Player p = player.GetComponent<Player>();
+
 		if (p != null)
+		{
 			p.ResetSpeedToDefault();
+		}
 
 		if (followCamera != null)
+		{
 			followCamera.SnapToTargetNow();
+		}
+	}
+
+	public void RespawnAtLastCheckpoint()
+	{
+		if (player == null)
+		{
+			return;
+		}
+
+		player.position = lastCheckpointPos;
+		player.rotation = lastCheckpointRot;
+
+		Player p = player.GetComponent<Player>();
+
+		if (p != null)
+		{
+			p.ResetSpeedToDefault();
+		}
+
+		if (followCamera != null)
+		{
+			followCamera.SnapToTargetNow();
+		}
 	}
 
 	public void AddScore(int amount)
 	{
 		score += amount;
 	}
+
 	public void SetLastCheckpoint(Transform checkpoint)
 	{
+		if (checkpoint == null)
+		{
+			return;
+		}
+
 		lastCheckpointPos = checkpoint.position;
 		lastCheckpointRot = checkpoint.rotation;
-	}
-	public void RespawnAtLastCheckpoint()
-	{
-		if (player == null)
-			return;
 
-		player.position = lastCheckpointPos;
-		player.rotation = lastCheckpointRot;
-
-		Player p = player.GetComponent<Player>();
-		if (p != null)
-			p.ResetSpeedToDefault();
+		if (botManager != null)
+		{
+			botManager.SetSpawnPoint(checkpoint);
+		}
 	}
 
 	public void RecountCheckpointsInScene()
@@ -114,7 +205,9 @@ public class RaceManager : MonoBehaviour
 	public void RegisterCheckpointPassed()
 	{
 		if (finished)
+		{
 			return;
+		}
 
 		passedCheckpoints++;
 		Debug.Log($"Checkpoint: {passedCheckpoints}/{totalCheckpoints}");
@@ -128,7 +221,9 @@ public class RaceManager : MonoBehaviour
 	public void TryFinish()
 	{
 		if (finished)
+		{
 			return;
+		}
 
 		if (!AllCheckpointsPassed())
 		{
@@ -136,8 +231,20 @@ public class RaceManager : MonoBehaviour
 			return;
 		}
 
+		FinishRace("FINISHED! All checkpoints passed.");
+	}
+
+	public void FinishRace(string message)
+	{
+		if (finished)
+		{
+			return;
+		}
+
 		finished = true;
+		isPaused = false;
 		Time.timeScale = 0f;
-		Debug.Log("FINISHED! All checkpoints passed.");
+
+		Debug.Log(message);
 	}
 }

@@ -15,13 +15,13 @@ public class FollowCamera : MonoBehaviour
 	private Vector3 relativePosLocal;
 	private Quaternion relativeRotLocal;
 
+	public Transform Target => player;
+
 	void Start()
 	{
 		if (player == null) return;
 
-		// Save the rig's initial pose relative to the target
-		relativePosLocal = Quaternion.Inverse(player.rotation) * (transform.position - player.position);
-		relativeRotLocal = Quaternion.Inverse(player.rotation) * transform.rotation;
+		SaveCurrentOffset();
 	}
 
 	void LateUpdate()
@@ -53,5 +53,26 @@ public class FollowCamera : MonoBehaviour
 
 		transform.position = desiredPos;
 		transform.rotation = desiredRot;
+	}
+
+	public void SetTarget(Transform newTarget, bool snapToTarget)
+	{
+		if (newTarget == null)
+			return;
+
+		player = newTarget;
+
+		if (snapToTarget)
+			SnapToTargetNow();
+	}
+
+	private void SaveCurrentOffset()
+	{
+		if (player == null)
+			return;
+
+		// Keep the original chase-camera offset.
+		relativePosLocal = Quaternion.Inverse(player.rotation) * (transform.position - player.position);
+		relativeRotLocal = Quaternion.Inverse(player.rotation) * transform.rotation;
 	}
 }
