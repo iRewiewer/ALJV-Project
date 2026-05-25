@@ -26,6 +26,9 @@ public class RaceManager : MonoBehaviour
 	[Header("Settings")]
 	public KeyCode pauseKey = KeyCode.P;
 	public KeyCode restartKey = KeyCode.R;
+	public float gameplayTimeScale = 1f;
+	public float minGameplayTimeScale = 0.1f;
+	public float maxGameplayTimeScale = 20f;
 
 	public Vector3 lastCheckpointPos;
 	public Quaternion lastCheckpointRot;
@@ -39,7 +42,8 @@ public class RaceManager : MonoBehaviour
 		}
 
 		Instance = this;
-		Time.timeScale = 1f;
+		gameplayTimeScale = Mathf.Clamp(gameplayTimeScale, minGameplayTimeScale, maxGameplayTimeScale);
+		Time.timeScale = gameplayTimeScale;
 
 		totalCoins = FindObjectsByType<Coin>(FindObjectsInactive.Include, FindObjectsSortMode.None).Length;
 
@@ -100,12 +104,24 @@ public class RaceManager : MonoBehaviour
 	public void ResumeRace()
 	{
 		isPaused = false;
-		Time.timeScale = 1f;
+		ApplyGameplayTimeScale();
 
 		if (pauseMenu != null)
 		{
 			pauseMenu.SetActive(false);
 		}
+	}
+
+	public void SetGameplayTimeScale(float value)
+	{
+		gameplayTimeScale = Mathf.Clamp(value, minGameplayTimeScale, maxGameplayTimeScale);
+		ApplyGameplayTimeScale();
+	}
+
+	public void ApplyGameplayTimeScale()
+	{
+		if (!isPaused && !finished)
+			Time.timeScale = gameplayTimeScale;
 	}
 
 	public void RestartRace()

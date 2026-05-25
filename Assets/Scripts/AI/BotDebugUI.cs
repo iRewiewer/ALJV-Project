@@ -18,6 +18,8 @@ public class BotDebugUI : MonoBehaviour
     private BotAgent trackedAgent;
     private Bot trackedBot;
     private BotRewardSystem trackedReward;
+    private RLBotBrain trackedRlBrain;
+    private bool trackingViewedBot;
 
     private void Update()
     {
@@ -40,6 +42,8 @@ public class BotDebugUI : MonoBehaviour
         trackedAgent = null;
         trackedBot = null;
         trackedReward = null;
+        trackedRlBrain = null;
+        trackingViewedBot = false;
 
         GameObject botObject = GetTrackedBotObject();
 
@@ -49,6 +53,7 @@ public class BotDebugUI : MonoBehaviour
         trackedAgent = botObject.GetComponent<BotAgent>();
         trackedBot = botObject.GetComponent<Bot>();
         trackedReward = botObject.GetComponent<BotRewardSystem>();
+        trackedRlBrain = botObject.GetComponent<RLBotBrain>();
     }
 
     private GameObject GetTrackedBotObject()
@@ -58,6 +63,17 @@ public class BotDebugUI : MonoBehaviour
 
         if (botManager.BotCount == 0)
             return null;
+
+        if (botManager.viewedBotIndex >= 0 && botManager.viewedBotIndex < botManager.BotCount)
+        {
+            trackedBotIndex = botManager.viewedBotIndex;
+            trackingViewedBot = true;
+
+            GameObject viewedBotObject = botManager.GetBotObject(trackedBotIndex);
+
+            if (viewedBotObject != null)
+                return viewedBotObject;
+        }
 
         trackedBotIndex = Mathf.Clamp(trackedBotIndex, 0, botManager.BotCount - 1);
 
@@ -118,11 +134,26 @@ public class BotDebugUI : MonoBehaviour
         float speed = trackedBot.CurrentSpeed;
         float reward = trackedReward != null ? trackedReward.totalReward : 0f;
         int botCount = botManager != null ? botManager.BotCount : 1;
+        string trackingLabel = trackingViewedBot ? "Viewed" : "Tracked";
+        string rlStats = "";
+
+        if (trackedRlBrain != null && trackedAgent != null && trackedAgent.aiType == BotAIType.ReinforcementLearning)
+        {
+            rlStats =
+                $"RL Episode: {trackedRlBrain.EpisodeNumber}\n" +
+                $"RL Time: {trackedRlBrain.EpisodeDuration:F1}s\n" +
+                $"RL CP Timer: {trackedRlBrain.TimeSinceCheckpointProgress:F1}s\n" +
+                $"RL Epsilon: {trackedRlBrain.Epsilon:F2}\n" +
+                $"RL Learning: {trackedRlBrain.IsLearningEnabled}\n" +
+                $"RL States: {trackedRlBrain.LearnedStateCount}\n" +
+                $"RL Shared: {trackedRlBrain.IsUsingSharedQTable}\n" +
+                $"RL Action: {trackedRlBrain.CurrentActionName}\n";
+        }
 
         debugText.text =
             "BOT DEBUG\n" +
             $"Bots: {botCount}\n" +
-            $"Tracked: {trackedBotIndex + 1}/{Mathf.Max(botCount, 1)} {botName}\n" +
+            $"{trackingLabel}: {trackedBotIndex + 1}/{Mathf.Max(botCount, 1)} {botName}\n" +
             $"AI: {aiType}\n" +
             $"State: {stateName}\n" +
             $"Checkpoint: {checkpointIndex}/{checkpointCount}\n" +
@@ -132,7 +163,8 @@ public class BotDebugUI : MonoBehaviour
             $"Coin: {coinName}\n" +
             $"Bomb: {bombName}\n" +
             $"Speed: {speed:F1}\n" +
-            $"Reward: {reward:F1}";
+            $"Reward: {reward:F1}\n" +
+            rlStats;
     }
 
     private string GetTransformName(Transform target)

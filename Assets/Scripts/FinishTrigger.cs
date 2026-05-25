@@ -4,9 +4,6 @@ public class FinishTrigger : MonoBehaviour
 {
 	void OnTriggerEnter(Collider other)
 	{
-		if (RaceManager.Instance == null)
-			return;
-
 		BotAgent botAgent = other.GetComponent<BotAgent>();
 
 		if (botAgent == null)
@@ -14,17 +11,16 @@ public class FinishTrigger : MonoBehaviour
 
 		if (botAgent != null)
 		{
-			if (botAgent.HasPassedAllCheckpoints())
-			{
-				RaceManager.Instance.FinishRace($"{botAgent.gameObject.name} finished. All checkpoints passed.");
-			}
+			if (botAgent.TryCompleteFinishLine())
+				Debug.Log($"{botAgent.gameObject.name} reached the finish line after all checkpoints.");
 			else
-			{
 				Debug.Log($"{botAgent.gameObject.name} reached finish without all checkpoints.");
-			}
 
 			return;
 		}
+
+		if (RaceManager.Instance == null)
+			return;
 
 		if (!other.transform.root.CompareTag("Player"))
 			return;

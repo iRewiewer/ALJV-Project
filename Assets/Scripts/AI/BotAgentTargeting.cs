@@ -85,6 +85,15 @@ public partial class BotAgent
             return transform.forward;
 
         Vector3 checkpointPosition = GetCurrentTargetPosition();
+
+        if (HasPassedAllCheckpoints() && checkpoints != null && checkpoints.Length > 0)
+        {
+            Transform lastCheckpoint = checkpoints[checkpoints.Length - 1];
+
+            if (lastCheckpoint != null)
+                return checkpointPosition - GetCheckpointAimPosition(lastCheckpoint);
+        }
+
         Transform previousCheckpoint = GetPreviousCheckpointTransform();
 
         if (previousCheckpoint != null)

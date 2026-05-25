@@ -1,0 +1,124 @@
+{
+    "version": 2,
+    "actionCount": 4,
+    "episodeNumber": 102,
+    "epsilon": 0.24,
+    "states": [
+        {
+            "stateKey": "cp:0|dist:close|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                17.112197875976564,
+                14.893461227416993,
+                15.362554550170899,
+                13.589914321899414
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:medium|angle:forward|bomb:True|fsm:AvoidDanger",
+            "actionValues": [
+                12.649568557739258,
+                5.399710655212402,
+                5.917646884918213,
+                4.107908248901367
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:medium|angle:forward|bomb:False|fsm:Collect",
+            "actionValues": [
+                13.019489288330079,
+                6.060739517211914,
+                8.583919525146485,
+                7.836022853851318
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:close|angle:forward|bomb:False|fsm:Collect",
+            "actionValues": [
+                13.07580280303955,
+                8.871922492980957,
+                7.824154376983643,
+                7.110101699829102
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:close|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                9.084973335266114,
+                13.271886825561524,
+                7.503135681152344,
+                9.803518295288086
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:medium|angle:left|bomb:False|fsm:Collect",
+            "actionValues": [
+                1.747826337814331,
+                2.7365729808807375,
+                1.5738983154296876,
+                1.7293286323547364
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:medium|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                1.0900696516036988,
+                0.8739182949066162,
+                1.1747483015060425,
+                3.6019773483276369
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:close|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.6366752982139587,
+                0.838067889213562,
+                -0.23824092745780946,
+                6.684842586517334
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:medium|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                -2.486504077911377,
+                -2.4509425163269045,
+                -2.247147560119629,
+                -1.8762931823730469
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:medium|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.5481435656547546,
+                -0.30162379145622256,
+                -0.5193285942077637,
+                -0.2735975384712219
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:far|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.8063470125198364,
+                -0.7432296276092529,
+                -0.9202828407287598,
+                -0.9072122573852539
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:medium|angle:forward|bomb:True|fsm:Collect",
+            "actionValues": [
+                1.0611475706100464,
+                1.890694260597229,
+                4.339069366455078,
+                1.3267227411270142
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:close|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                4.325929164886475,
+                1.2733268737792969,
+                2.4279837608337404,
+                0.2245597392320633
+            ]
+        }
+}

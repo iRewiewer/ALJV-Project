@@ -130,7 +130,7 @@ public partial class BotAgent
         CollectCoin(coinObject, value);
 
         if (coinObject != null)
-            Destroy(coinObject);
+            DisableForEpisode(coinObject);
     }
 
     private void HandleBombHit(GameObject bombObject)
@@ -149,7 +149,37 @@ public partial class BotAgent
             nearestBomb = null;
 
         if (bombObject != null)
-            Destroy(bombObject);
+            DisableForEpisode(bombObject);
+    }
+
+    private void DisableForEpisode(GameObject episodeObject)
+    {
+        if (episodeObject == null)
+            return;
+
+        disabledEpisodeObjects.Add(episodeObject);
+        episodeObject.SetActive(false);
+    }
+
+    private void ReactivateEpisodeObjects()
+    {
+        foreach (GameObject episodeObject in disabledEpisodeObjects)
+        {
+            if (episodeObject == null)
+                continue;
+
+            episodeObject.SetActive(true);
+
+            Bomb bomb = episodeObject.GetComponent<Bomb>();
+
+            if (bomb == null)
+                bomb = episodeObject.GetComponentInChildren<Bomb>();
+
+            if (bomb != null)
+                bomb.ResetForTrainingEpisode();
+        }
+
+        disabledEpisodeObjects.Clear();
     }
 
     private bool TryGetObjectBounds(GameObject obj, out Bounds bounds)
@@ -177,6 +207,9 @@ public partial class BotAgent
 
     private bool TryHandleCheckpoint(GameObject other)
     {
+        if (HasPassedAllCheckpoints())
+            return false;
+
         BotCheckpointTrigger botCheckpoint = FindPickupComponent<BotCheckpointTrigger>(other);
 
         if (botCheckpoint != null)

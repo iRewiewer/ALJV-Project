@@ -36,4 +36,10 @@ public class Bomb : MonoBehaviour
 
 		Destroy(gameObject);
 	}
+
+	public void ResetForTrainingEpisode()
+	{
+		triggered = false;
+		transform.position = startPos;
+	}
 }

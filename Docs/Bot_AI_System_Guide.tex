@@ -1,0 +1,581 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=0.85in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\setlist[itemize]{leftmargin=1.2em,itemsep=2pt,topsep=2pt}
+
+\newcommand{\file}[1]{\texttt{#1}}
+\newcommand{\code}[1]{{\footnotesize\texttt{#1}}}
+
+\title{\textbf{Bot AI System Guide}\\Spaceship Racing Project}
+\author{Assets/Scripts overview}
+\date{May 5, 2026}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{What This Document Covers}
+
+This document explains the bot AI code currently living in \file{Assets/Scripts}, with most focus on \file{Assets/Scripts/AI}. It is written for the current Stage 3 goal: basic bots that can race through checkpoints, collect coins, avoid bombs, and expose enough debug data to tune them in Unity.
+
+The project already has the player, coins, bombs, checkpoints, and finish line. The bot layer adds a parallel racer that uses the same level objects but tracks its own checkpoint progress.
+
+\section{Quick Unity Setup}
+
+To run the bot system in Unity, the scene needs these references wired:
+
+\begin{itemize}
+    \item Add a \code{BotManager} in the scene.
+    \item Assign \code{BotManager.botPrefab} to the bot prefab.
+    \item Assign \code{BotManager.botSpawnPoint}; usually this is the same start transform used by the player.
+    \item Assign \code{BotManager.cameraRig} to the object that has \code{FollowCamera}, or leave it to auto-find if the scene only has one.
+    \item On pause menu buttons, call wrapper methods on \code{PauseMenu}.
+    \item Bot buttons can call \code{AddBot}, \code{RemoveBot}, \code{SwitchViewToBot}, and \code{ToggleBotAIGizmos}.
+    \item If using \code{BotDebugUI}, assign a TextMeshPro text object to \code{debugText}. Assigning \code{botManager} is optional because it can auto-find it.
+    \item Coins should have the \code{Coin} script and ideally the \code{Coin} tag.
+    \item Bombs should have the \code{Bomb} script and ideally the \code{Bomb} tag.
+    \item Checkpoints should have \code{Checkpoint}.
+    \item Optional bot-only trigger objects can use \code{BotCheckpointTrigger}.
+    \item If using those bot-only triggers, set explicit checkpoint indexes on them.
+\end{itemize}
+
+The bot prefab should have these components:
+
+\begin{itemize}
+    \item \code{Bot}: movement controller.
+    \item \code{BotAgent}: AI coordinator.
+    \item \code{BotRewardSystem}: reward tracking for RL and debug.
+    \item \code{FSMBotBrain}: main Stage 3 brain.
+    \item \code{RLBotBrain}: basic RL skeleton, if the prefab can switch to RL.
+    \item A collider somewhere on the bot, so overlap and trigger checks have bounds.
+\end{itemize}
+
+\section{Overall Architecture}
+
+The AI is split into small files using a partial \code{BotAgent} class. The important idea is that \code{BotAgent} owns the race context, while the brain only decides steering and speed.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.33\linewidth}>{\raggedright\arraybackslash}p{0.60\linewidth}}
+\textbf{Part} & \textbf{Job} \\
+\hline
+\file{Bot.cs} & Moves the ship forward, rotates it, handles acceleration/braking, and displays the nameplate. It does not decide where to go. \\
+\file{BotAgent*.cs} & Finds checkpoints, coins, bombs, tracks progress, decides the current state, handles checkpoint/coin/bomb interactions, and gives target positions to the brain. \\
+\file{FSMBotBrain.cs} & Simple hand-made AI brain. Steers toward the target and picks a safe speed depending on angle, distance, bombs, and recovery state. \\
+\file{RLBotBrain.cs} & Basic Q-table demo. It still steers mostly toward the target, but can bias actions and update values from reward changes. \\
+\file{BotRewardSystem.cs} & Stores reward numbers used by debug and RL. \\
+\file{BotManager.cs} & Spawns/removes bots, tracks the bot list, switches camera view, and toggles AI gizmos. \\
+\file{BotDebugUI.cs} & Displays live bot info on the screen. \\
+\end{longtable}
+
+One frame of bot AI looks like this:
+
+\begin{enumerate}
+    \item \code{BotAgent.Update} checks that checkpoints exist.
+    \item It adds a small time penalty.
+    \item It scans for nearest checkpoint, useful coin, and dangerous bomb.
+    \item It checks overlap against coins, bombs, and the current checkpoint.
+    \item It updates the current state: \code{Racing}, \code{Collect}, \code{AvoidDanger}, or \code{Recover}.
+    \item It applies progress reward.
+    \item It ticks either the FSM brain or the RL brain.
+    \item The selected brain calls \code{Bot.SetAiInput}.
+    \item \code{Bot.Update} turns, accelerates/brakes, and moves forward.
+\end{enumerate}
+
+\section{AI Files}
+
+\subsection{\file{BotAIType.cs}}
+
+Defines the small enums used by the AI:
+
+\begin{itemize}
+    \item \code{BotAIType.FiniteStateMachine}: use the normal FSM brain.
+    \item \code{BotAIType.ReinforcementLearning}: use the RL brain.
+    \item \code{BotState.Racing}: normal checkpoint chasing.
+    \item \code{BotState.AvoidDanger}: a bomb is close enough and in the flight corridor.
+    \item \code{BotState.Collect}: a coin is worth steering toward.
+    \item \code{BotState.Recover}: the bot missed a checkpoint or passed its plane badly and must line up again.
+\end{itemize}
+
+\subsection{\file{Bot.cs}}
+
+\code{Bot} is the physical movement script for a bot ship.
+
+Main responsibilities:
+
+\begin{itemize}
+    \item Reads AI inputs set by \code{SetAiInput}.
+    \item Smooths pitch and yaw input.
+    \item Rotates the ship using pitch/yaw speeds.
+    \item Adds visual roll while turning.
+    \item Accelerates or brakes toward whatever the brain requested.
+    \item Moves forward every frame using \code{transform.forward * currentSpeed}.
+    \item Rotates the nameplate so it faces the camera.
+\end{itemize}
+
+Important point: this script is not pathfinding. It is closer to a bot version of the player movement controller. The brain says ``turn left, pitch up, brake'', and \code{Bot} performs it.
+
+\subsection{\file{BotAgent.cs}}
+
+\code{BotAgent} is the center of the AI system. It is a partial class, so its logic is split across several files.
+
+This file contains:
+
+\begin{itemize}
+    \item Main settings for checkpoint paths, sensors, recovery, coins, bombs, and runtime state.
+    \item References to \code{Bot}, \code{BotRewardSystem}, \code{FSMBotBrain}, and \code{RLBotBrain}.
+    \item The core \code{Update} loop.
+    \item Auto-finding checkpoints.
+    \item Brain selection between FSM and RL.
+    \item State selection.
+    \item Gizmo drawing.
+\end{itemize}
+
+Checkpoint discovery works in two passes:
+
+\begin{itemize}
+    \item First it looks for \code{BotCheckpointTrigger} objects and sorts by their explicit \code{checkpointIndex}.
+    \item If those are not present, it falls back to \code{Checkpoint} objects sorted by hierarchy order.
+\end{itemize}
+
+The state logic is intentionally simple. Bomb danger wins first, recovery wins next, coin collection wins after that, and normal racing is the fallback.
+
+\subsection{\file{BotAgentSensors.cs}}
+
+This file scans the scene for things the bot cares about.
+
+\code{FindNearestCheckpoint} is mostly for debug display. The actual race target is \code{currentTarget}, not just whatever checkpoint is nearest.
+
+\code{FindDangerBombInFront} finds bombs that are:
+
+\begin{itemize}
+    \item tagged \code{Bomb},
+    \item inside detection distance,
+    \item in front of the bot,
+    \item close enough sideways/vertically to matter,
+    \item not too far off-angle.
+\end{itemize}
+
+This is why bomb avoidance does not trigger from every bomb in the level. It only reacts to bombs inside the forward corridor.
+
+\code{FindBestPathCoin} finds coins that are:
+
+\begin{itemize}
+    \item tagged \code{Coin},
+    \item in front of the bot,
+    \item inside detection radius,
+    \item not too close,
+    \item reasonably aligned with the current checkpoint path.
+\end{itemize}
+
+Coins are treated as a small steering bias, not as the main objective. The checkpoint route still matters more.
+
+\subsection{\file{BotAgentTargeting.cs}}
+
+This file answers the question: ``where should the bot point right now?''
+
+Main methods:
+
+\begin{itemize}
+    \item \code{GetTargetPositionByState}: final target position after coin bias and bomb avoidance.
+    \item \code{GetCurrentTargetPosition}: center point of the current checkpoint.
+    \item \code{GetCheckpointAimPosition}: aims at the checkpoint center, preferring the \code{portalSurface} bounds when available.
+    \item \code{GetCheckpointRecoveryApproachPoint}.
+    \item Creates a point before the checkpoint.
+    \item That recovery point lets the bot go away, turn around, and line up.
+    \item \code{ApplyCoinBias}: gently pulls target position toward a good coin.
+    \item \code{ApplyBombAvoidance}: pushes target position away from dangerous bombs.
+\end{itemize}
+
+Recovery is the important part for missed checkpoints. If the bot has flown past the checkpoint plane or is too badly angled, it does not keep circling the checkpoint. It picks a setup point before the checkpoint, flies there, then turns back through the checkpoint.
+
+\subsection{\file{BotAgentRewards.cs}}
+
+This file tracks progress and checkpoint completion.
+
+Main responsibilities:
+
+\begin{itemize}
+    \item Adds reward for moving closer to the current target.
+    \item Adds small reward for moving fast while aligned.
+    \item Penalizes wrong direction progress.
+    \item Detects checkpoint overlap using bounds, not only Unity trigger events.
+    \item Completes checkpoints only in the correct order.
+    \item Verifies the bot is facing through the checkpoint using a dot product threshold.
+    \item Tracks \code{passedCheckpointCount}.
+    \item Exposes \code{HasPassedAllCheckpoints} for the finish line.
+\end{itemize}
+
+The checkpoint counter is independent from the player counter in \code{RaceManager}. The bot has its own progress count because checkpoints should not disappear or become disabled for every racer.
+
+\subsection{\file{BotAgentCollision.cs}}
+
+This file handles collision and trigger events for bot interactions.
+
+It handles:
+
+\begin{itemize}
+    \item Checkpoints.
+    \item Coins.
+    \item Bombs.
+    \item Respawn after bomb hit.
+\end{itemize}
+
+There are two layers of detection:
+
+\begin{itemize}
+    \item Unity callbacks: \code{OnTriggerEnter} and \code{OnCollisionEnter}.
+    \item Manual overlap fallback: \code{TryHandlePickupsAndHazardsByOverlap}.
+\end{itemize}
+
+The overlap fallback is useful because the bot movement currently moves the transform directly. Direct transform movement can sometimes miss physics trigger events, especially with fast objects or odd collider setup. The fallback checks bot bounds against coin/bomb bounds each frame and handles the pickup/hazard if they intersect.
+
+Coin behavior:
+
+\begin{itemize}
+    \item The bot records the coin so it cannot be collected twice.
+    \item Reward is added.
+    \item The coin object is destroyed.
+\end{itemize}
+
+Bomb behavior:
+
+\begin{itemize}
+    \item The bot records the bomb so the same bomb cannot hit twice.
+    \item Bomb penalty is added.
+    \item The bot teleports to the last safe checkpoint.
+    \item Speed resets.
+    \item The bomb object is destroyed.
+\end{itemize}
+
+\subsection{\file{BotCheckpointTrigger.cs}}
+
+This is an optional helper trigger for bot checkpoint order.
+
+If the scene uses these objects, each one should have a \code{checkpointIndex}. The bot then completes checkpoint \code{0}, then \code{1}, and so on. This avoids relying on hierarchy order.
+
+\subsection{\file{BotRewardSystem.cs}}
+
+This stores reward values and total reward.
+
+It is used by:
+
+\begin{itemize}
+    \item \code{BotAgentRewards} to add progress, checkpoint, coin, bomb, and time rewards.
+    \item \code{RLBotBrain} to learn from reward changes.
+    \item \code{BotDebugUI} to display reward on screen.
+\end{itemize}
+
+This is not a full training system yet. It is enough for Stage 3 to show reward feedback and make the RL brain not be empty.
+
+\subsection{\file{FSMBotBrain.cs}}
+
+This is the main bot brain for Stage 3.
+
+The FSM brain does not move the ship itself. It calculates input and sends it to \code{Bot.SetAiInput}.
+
+Each tick:
+
+\begin{itemize}
+    \item Ask \code{BotAgent} for the current target position.
+    \item Convert target direction into local bot space.
+    \item Turn yaw toward local X.
+    \item Turn pitch toward local Y.
+    \item Pick a desired speed.
+    \item Accelerate or brake toward that speed.
+\end{itemize}
+
+Speed rules:
+
+\begin{itemize}
+    \item Go faster when aligned.
+    \item Slow down for turns.
+    \item Slow down when near checkpoints.
+    \item Slow down when avoiding bombs.
+    \item Slow down heavily during recovery.
+    \item If the target is behind the bot, keep turning in the last useful yaw direction.
+\end{itemize}
+
+\subsection{\file{RLBotBrain.cs}}
+
+This is the basic reinforcement learning implementation.
+
+It uses a small Q-table:
+
+\begin{itemize}
+    \item State comes from \code{BotState} plus rough target direction.
+    \item Actions are steering biases: neutral, left, right, down, up.
+    \item It chooses randomly sometimes using \code{explorationRate}.
+    \item Otherwise it chooses the highest-valued action.
+    \item It updates the previous action value from reward delta.
+\end{itemize}
+
+Important limitation: this is not a serious trained racing agent yet. It still uses target steering as its base behavior, then adds small action bias. That is good enough for Stage 3 because the assignment asks for basic RL, not final training.
+
+\subsection{\file{BotManager.cs}}
+
+\code{BotManager} owns the scene-level bot controls.
+
+Main jobs:
+
+\begin{itemize}
+    \item Spawn bots from \code{botPrefab}.
+    \item Remove one bot or all bots.
+    \item Cap the number of bots using \code{MAX\_BOTS}.
+    \item Name bots as they spawn.
+    \item Set bot spawn position/rotation.
+    \item Reset bots to the spawn point.
+    \item Cycle camera view through player and bots.
+    \item Toggle AI gizmos.
+\end{itemize}
+
+\code{SwitchViewToBot} cycles like this:
+
+\begin{itemize}
+    \item player view,
+    \item bot 1,
+    \item bot 2,
+    \item more bots,
+    \item back to player view.
+\end{itemize}
+
+\code{ToggleBotAIGizmos} changes the static \code{BotAgent.showAiGizmos} flag, so all bot agents draw or hide their debug gizmos together.
+
+\subsection{\file{BotDebugUI.cs}}
+
+This displays live information about one tracked bot.
+
+It shows:
+
+\begin{itemize}
+    \item bot count,
+    \item tracked bot index,
+    \item AI type,
+    \item current state,
+    \item current checkpoint index,
+    \item passed checkpoints,
+    \item current target,
+    \item nearest checkpoint,
+    \item coin target,
+    \item bomb target,
+    \item speed,
+    \item reward.
+\end{itemize}
+
+It updates on unscaled time, so it can still refresh while the game is paused.
+
+\section{Non-AI Scripts Used By Bots}
+
+\subsection{\file{Checkpoint.cs}}
+
+For the player, a checkpoint records that the player's root transform passed through it, updates the last checkpoint, and increments \code{RaceManager.passedCheckpoints}.
+
+It does not destroy or disable the whole checkpoint. Instead, it only hides \code{portalSurface} for the player-visible effect. This matters because bots still need the trigger and bounds alive after the player passes through.
+
+For bots, \code{Checkpoint.OnTriggerEnter} forwards to \code{BotAgent.TryCompleteCheckpointIndex}.
+
+\subsection{\file{FinishTrigger.cs}}
+
+The finish line supports both player and bots.
+
+\begin{itemize}
+    \item For a bot, it checks \code{BotAgent.HasPassedAllCheckpoints}.
+    \item If true, it calls \code{RaceManager.FinishRace}.
+    \item If false, it logs that the bot reached finish early.
+    \item For the player, it calls \code{RaceManager.TryFinish}.
+\end{itemize}
+
+\subsection{\file{RaceManager.cs}}
+
+\code{RaceManager} owns player race state: pause, timer, score, player checkpoints, respawn, finish, and scene restart.
+
+The bot integration points are:
+
+\begin{itemize}
+    \item \code{botManager} reference.
+    \item \code{SetLastCheckpoint} updates bot spawn point too.
+    \item \code{FinishRace} lets the finish line end the race for either player or bot.
+\end{itemize}
+
+\subsection{\file{PauseMenu.cs}}
+
+This file stays thin. It exposes methods Unity buttons can call:
+
+\begin{itemize}
+    \item \code{AddBot}
+    \item \code{AddAllBots}
+    \item \code{RemoveBot}
+    \item \code{RemoveAllBots}
+    \item \code{SwitchViewToBot}
+    \item \code{ToggleBotAIGizmos}
+\end{itemize}
+
+Actual bot logic stays in \code{BotManager}.
+
+\subsection{\file{FollowCamera.cs}}
+
+\code{FollowCamera} normally follows the player. Bot camera support adds:
+
+\begin{itemize}
+    \item \code{Target} getter.
+    \item \code{SetTarget}.
+    \item \code{SnapToTargetNow}.
+\end{itemize}
+
+The offset is preserved, so the camera can follow a bot using the same chase-camera style as the player.
+
+\subsection{\file{Coin.cs}}
+
+Player coin logic:
+
+\begin{itemize}
+    \item rotates the coin visually,
+    \item checks for player trigger,
+    \item adds score,
+    \item destroys the coin.
+\end{itemize}
+
+Bots do not use this script directly for scoring. Bot coin pickup is handled inside \code{BotAgentCollision} because bot reward is separate from player score.
+
+\subsection{\file{Bomb.cs}}
+
+Player bomb logic:
+
+\begin{itemize}
+    \item floats the bomb up and down,
+    \item checks for player trigger,
+    \item respawns the player at last checkpoint,
+    \item destroys the bomb.
+\end{itemize}
+
+Bot bomb behavior is separate in \code{BotAgentCollision}: the bot gets a reward penalty, teleports to its last safe checkpoint, resets speed, and destroys the bomb.
+
+\section{How Checkpoints Work For Bots}
+
+The bot has its own checkpoint fields:
+
+\begin{itemize}
+    \item \code{currentCheckpointIndex}: what the bot should hit next.
+    \item \code{passedCheckpointCount}: how many checkpoints the bot completed.
+    \item \code{lastSafeCheckpointIndex}: where it should respawn after a bomb.
+\end{itemize}
+
+The bot only counts a checkpoint when:
+
+\begin{itemize}
+    \item it is the expected checkpoint index,
+    \item its bounds overlap the checkpoint pass bounds or a trigger fires,
+    \item it is moving through the checkpoint in the expected direction.
+\end{itemize}
+
+This prevents the old problem where the bot got close and switched target without actually passing through. The target changes only after completion is accepted.
+
+\section{How Coins And Bombs Work For Bots}
+
+Bots do not rely only on Unity trigger callbacks for coins and bombs. Because the bot moves by changing transform position directly, trigger callbacks can be unreliable. So \code{BotAgentCollision} also runs an overlap scan.
+
+Coin flow:
+
+\begin{enumerate}
+    \item Bot bounds intersect coin bounds, or a trigger/collision event fires.
+    \item \code{HandleCoinPickup} calls \code{CollectCoin}.
+    \item Reward is added.
+    \item Coin is destroyed.
+\end{enumerate}
+
+Bomb flow:
+
+\begin{enumerate}
+    \item Bot bounds intersect bomb bounds, or a trigger/collision event fires.
+    \item \code{HandleBombHit} adds bomb penalty.
+    \item Bot teleports to last safe checkpoint.
+    \item Bot speed resets to minimum.
+    \item Bomb is destroyed.
+\end{enumerate}
+
+\section{How Recovery Works}
+
+Recovery exists because a spaceship cannot instantly turn like a ground car. If the bot overshoots a checkpoint and keeps trying to turn directly into it, it can orbit forever.
+
+The current recovery logic does this instead:
+
+\begin{enumerate}
+    \item Detect that the bot is too far, too badly angled, or has passed the checkpoint plane.
+    \item Pick a setup point before the checkpoint, based on checkpoint pass direction.
+    \item Fly to that setup point at slower speed.
+    \item Once it is far enough and facing well enough, exit recovery.
+    \item Aim through the checkpoint again.
+\end{enumerate}
+
+This makes the bot go away for a bit, turn around, and re-enter properly instead of circling the portal forever.
+
+\section{Debugging And Gizmos}
+
+\code{BotAgent.OnDrawGizmos} draws:
+
+\begin{itemize}
+    \item green line/sphere for current target,
+    \item cyan line/sphere for recovery setup point,
+    \item yellow line/sphere for coin target,
+    \item red line/sphere for bomb danger.
+\end{itemize}
+
+These are Unity Gizmos. They normally show in the Scene view. In Game view they only show if the Game view Gizmos toggle is enabled in the Unity editor. They are not normal runtime UI.
+
+For actual always-visible game UI, use \code{BotDebugUI}.
+
+\section{Tuning Notes}
+
+Useful values to tune in the Inspector:
+
+\begin{itemize}
+    \item \code{Bot.maxSpeed}: hard max ship speed.
+    \item \code{Bot.acceleration}: how quickly the bot speeds up.
+    \item \code{Bot.brakingAcceleration}: how quickly it slows down.
+    \item \code{Bot.yawSpeed}: how fast it can turn horizontally.
+    \item \code{FSMBotBrain.cruiseSpeed}: normal race speed.
+    \item \code{FSMBotBrain.checkpointSpeed}: speed near checkpoints.
+    \item \code{FSMBotBrain.recoverySpeed}: speed while lining up again.
+    \item \code{BotAgent.bombAvoidDistance}: how close bombs must be before avoidance changes target.
+    \item \code{BotAgent.bombAvoidSideRange}: sideways bomb corridor.
+    \item \code{BotAgent.bombAvoidVerticalRange}: vertical bomb corridor.
+    \item \code{BotAgent.coinInfluence}: how much coins pull the target away from checkpoint line.
+    \item \code{BotAgent.recoverySetupDistance}: how far back the bot goes to line up again.
+\end{itemize}
+
+If the bot misses checkpoints, start by lowering checkpoint speed and recovery speed. If it dodges checkpoints near bombs, reduce bomb avoidance distance or side/vertical range. If it ignores coins, increase coin detection radius or coin influence.
+
+\section{What Is Still Basic}
+
+This system is good for Stage 3, but not final AI.
+
+Things that are still intentionally simple:
+
+\begin{itemize}
+    \item No real path planning around level geometry.
+    \item No trained RL model saved to disk.
+    \item RL values reset when the scene starts.
+    \item Coins are a steering bias, not a planned route.
+    \item Bomb avoidance is corridor-based, not a full avoidance solver.
+    \item Movement uses direct transform updates, so overlap fallback is needed for reliable pickups.
+\end{itemize}
+
+For Stage 4, the natural next step is to keep FSM as the reliable baseline and make RL compare against it with better observations, stored training data, and more controlled reward shaping.
+
+\end{document}

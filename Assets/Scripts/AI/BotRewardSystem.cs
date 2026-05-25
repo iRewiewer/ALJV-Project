@@ -3,8 +3,8 @@ using UnityEngine;
 public class BotRewardSystem : MonoBehaviour
 {
     [Header("Reward Values")]
-    public float checkpointReward = 10f;
-    public float coinReward = 2f;
+    public float checkpointReward = 30f;
+    public float coinReward = 0f;
     public float bombPenalty = -5f;
     public float timePenaltyPerSecond = -0.1f;
 
@@ -15,6 +15,9 @@ public class BotRewardSystem : MonoBehaviour
 
     [Header("Debug")]
     public float totalReward;
+    public int checkpointsReached;
+    public int coinsCollected;
+    public int bombsHit;
     public bool verboseLogs = false;
 
     public void AddProgressReward(float progressAmount)
@@ -37,16 +40,19 @@ public class BotRewardSystem : MonoBehaviour
 
     public void AddCheckpointReward()
     {
+        checkpointsReached++;
         AddReward(checkpointReward, "Checkpoint", true);
     }
 
-    public void AddCoinReward()
+    public void AddCoinReward(int value = 1)
     {
-        AddReward(coinReward, "Coin", true);
+        coinsCollected++;
+        AddReward(coinReward * Mathf.Max(1, value), "Coin", true);
     }
 
     public void AddBombPenalty()
     {
+        bombsHit++;
         AddReward(bombPenalty, "Bomb", true);
     }
 
@@ -66,5 +72,8 @@ public class BotRewardSystem : MonoBehaviour
     public void ResetReward()
     {
         totalReward = 0f;
+        checkpointsReached = 0;
+        coinsCollected = 0;
+        bombsHit = 0;
     }
 }

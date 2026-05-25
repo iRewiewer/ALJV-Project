@@ -1,0 +1,1828 @@
+{
+    "version": 4,
+    "actionCount": 4,
+    "episodeNumber": 420,
+    "epsilon": 0.25,
+    "bestCheckpointsReached": 14,
+    "bestEpisodeReward": 512.27294921875,
+    "states": [
+        {
+            "stateKey": "cp:0|dist:close|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                28.98847198486328,
+                29.214317321777345,
+                29.207509994506837,
+                29.36751937866211
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:medium|angle:left|bomb:True|fsm:AvoidDanger",
+            "actionValues": [
+                0.0,
+                0.6178205013275147,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:medium|angle:forward|bomb:False|fsm:Collect",
+            "actionValues": [
+                22.38248634338379,
+                22.992795944213868,
+                22.546558380126954,
+                21.29401206970215
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:medium|angle:forward|bomb:True|fsm:AvoidDanger",
+            "actionValues": [
+                10.047368049621582,
+                21.5891170501709,
+                15.490968704223633,
+                14.607461929321289
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:close|angle:forward|bomb:False|fsm:Collect",
+            "actionValues": [
+                27.497644424438478,
+                28.09260368347168,
+                27.53166961669922,
+                27.452180862426759
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:close|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                31.43112564086914,
+                30.12310791015625,
+                30.90323829650879,
+                30.523420333862306
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:close|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                19.330373764038087,
+                16.43019676208496,
+                17.3575439453125,
+                26.695819854736329
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:medium|angle:left|bomb:False|fsm:Collect",
+            "actionValues": [
+                4.410279273986816,
+                4.311126232147217,
+                4.264631271362305,
+                4.219749450683594
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:medium|angle:forward|bomb:False|fsm:Collect",
+            "actionValues": [
+                4.042679786682129,
+                6.333686828613281,
+                3.108959436416626,
+                3.374752998352051
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:medium|angle:forward|bomb:True|fsm:AvoidDanger",
+            "actionValues": [
+                1.88618004322052,
+                1.3339035511016846,
+                0.21076282858848573,
+                0.9946505427360535
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:close|angle:forward|bomb:False|fsm:Collect",
+            "actionValues": [
+                10.553388595581055,
+                10.153528213500977,
+                7.450862407684326,
+                6.6251444816589359
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:close|angle:forward|bomb:True|fsm:AvoidDanger",
+            "actionValues": [
+                9.917034149169922,
+                1.3314204216003419,
+                3.8706557750701906,
+                4.678527355194092
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:close|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                15.87103271484375,
+                10.846637725830079,
+                10.651824951171875,
+                10.626192092895508
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:medium|angle:forward|bomb:True|fsm:Collect",
+            "actionValues": [
+                4.107870578765869,
+                0.27326732873916628,
+                0.9934548735618591,
+                0.40842190384864809
+            ]
+        },
+        {
+            "stateKey": "cp:3|dist:medium|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.07264967262744904,
+                1.9573590755462647,
+                0.149539515376091,
+                0.06180353835225105
+            ]
+        },
+        {
+            "stateKey": "cp:3|dist:medium|angle:left|bomb:False|fsm:Collect",
+            "actionValues": [
+                0.5370111465454102,
+                1.10763418674469,
+                0.9354575872421265,
+                6.993563175201416
+            ]
+        },
+        {
+            "stateKey": "cp:3|dist:close|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                11.840288162231446,
+                17.878095626831056,
+                22.80014991760254,
+                16.341032028198243
+            ]
+        },
+        {
+            "stateKey": "cp:3|dist:close|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                1.4318668842315674,
+                1.5084348917007447,
+                1.4516507387161255,
+                1.447641372680664
+            ]
+        },
+        {
+            "stateKey": "cp:3|dist:close|angle:right|bomb:False|fsm:Racing",
+            "actionValues": [
+                3.7241766452789308,
+                2.8019368648529054,
+                0.010354186408221722,
+                0.01315114926546812
+            ]
+        },
+        {
+            "stateKey": "cp:3|dist:close|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.09671255201101303,
+                -0.10449372231960297,
+                -0.11457010358572006,
+                -0.1278306245803833
+            ]
+        },
+        {
+            "stateKey": "cp:3|dist:medium|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.2775171101093292,
+                -0.2816975712776184,
+                -0.2140699177980423,
+                -0.2811861038208008
+            ]
+        },
+        {
+            "stateKey": "cp:3|dist:far|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.01691480167210102,
+                -0.04372333362698555,
+                -0.03756070137023926,
+                -0.008278442546725273
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:medium|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                3.4183266162872316,
+                3.381786584854126,
+                3.2730369567871095,
+                3.2718091011047365
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:close|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                1.7191376686096192,
+                1.8681387901306153,
+                1.8075393438339234,
+                1.9226261377334595
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:medium|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.07252562046051026,
+                -0.21058867871761323,
+                -0.2247067242860794,
+                -0.23714791238307954
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:medium|angle:forward|bomb:True|fsm:Collect",
+            "actionValues": [
+                20.912391662597658,
+                8.509663581848145,
+                4.146310329437256,
+                9.89736557006836
+            ]
+        },
+        {
+            "stateKey": "cp:3|dist:medium|angle:forward|bomb:False|fsm:Collect",
+            "actionValues": [
+                12.013937950134278,
+                7.548003196716309,
+                7.581935882568359,
+                7.6884002685546879
+            ]
+        },
+        {
+            "stateKey": "cp:3|dist:close|angle:forward|bomb:False|fsm:Collect",
+            "actionValues": [
+                11.885897636413575,
+                15.489996910095215,
+                10.295877456665039,
+                10.742754936218262
+            ]
+        },
+        {
+            "stateKey": "cp:3|dist:close|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.09159605950117111,
+                -0.10456031560897827,
+                -0.09323599934577942,
+                -0.07257002592086792
+            ]
+        },
+        {
+            "stateKey": "cp:3|dist:medium|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.14674478769302369,
+                -0.10852067917585373,
+                -0.11733692139387131,
+                -0.15762141346931458
+            ]
+        },
+        {
+            "stateKey": "cp:3|dist:far|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.15682455897331239,
+                -0.018098969012498857,
+                -0.14346033334732057,
+                -0.13649842143058778
+            ]
+        },
+        {
+            "stateKey": "cp:3|dist:medium|angle:forward|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.02553424797952175,
+                0.18577560782432557,
+                0.4639180302619934,
+                0.07725901901721955
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:medium|angle:forward|bomb:True|fsm:Racing",
+            "actionValues": [
+                21.512624740600587,
+                15.79440689086914,
+                17.84724235534668,
+                14.382290840148926
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:close|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.2821013927459717,
+                -0.22509139776229859,
+                -0.26907941699028017,
+                -0.33155351877212527
+            ]
+        },
+        {
+            "stateKey": "cp:4|dist:far|angle:left|bomb:False|fsm:Collect",
+            "actionValues": [
+                3.271498680114746,
+                0.08905169367790222,
+                0.29705020785331728,
+                0.6798840165138245
+            ]
+        },
+        {
+            "stateKey": "cp:4|dist:far|angle:forward|bomb:False|fsm:Collect",
+            "actionValues": [
+                1.3130974769592286,
+                0.0,
+                0.154448002576828,
+                1.8487653732299805
+            ]
+        },
+        {
+            "stateKey": "cp:4|dist:medium|angle:left|bomb:False|fsm:Collect",
+            "actionValues": [
+                0.16743841767311097,
+                4.086767673492432,
+                0.7701767086982727,
+                0.14118851721286775
+            ]
+        },
+        {
+            "stateKey": "cp:4|dist:medium|angle:forward|bomb:False|fsm:Collect",
+            "actionValues": [
+                13.2798433303833,
+                5.641846656799316,
+                5.22015380859375,
+                6.015574932098389
+            ]
+        },
+        {
+            "stateKey": "cp:4|dist:medium|angle:forward|bomb:True|fsm:AvoidDanger",
+            "actionValues": [
+                0.21173186600208283,
+                0.06868087500333786,
+                0.13734766840934754,
+                0.37458372116088869
+            ]
+        },
+        {
+            "stateKey": "cp:4|dist:close|angle:forward|bomb:False|fsm:Collect",
+            "actionValues": [
+                1.686991572380066,
+                8.033303260803223,
+                1.3455222845077515,
+                0.3178061544895172
+            ]
+        },
+        {
+            "stateKey": "cp:4|dist:close|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                23.72792625427246,
+                16.36511993408203,
+                10.970053672790528,
+                16.1795654296875
+            ]
+        },
+        {
+            "stateKey": "cp:4|dist:close|angle:right|bomb:False|fsm:Racing",
+            "actionValues": [
+                15.046944618225098,
+                3.9475250244140627,
+                3.575758457183838,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:5|dist:medium|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                1.3531999588012696,
+                5.299070358276367,
+                0.5371330976486206,
+                1.831023931503296
+            ]
+        },
+        {
+            "stateKey": "cp:5|dist:medium|angle:left|bomb:False|fsm:Collect",
+            "actionValues": [
+                7.250431060791016,
+                1.903806209564209,
+                2.500981092453003,
+                1.4766483306884766
+            ]
+        },
+        {
+            "stateKey": "cp:5|dist:close|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                6.726388454437256,
+                4.4775519371032719,
+                2.818185329437256,
+                11.392298698425293
+            ]
+        },
+        {
+            "stateKey": "cp:5|dist:close|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.032882630825042728,
+                -0.03809312358498573,
+                -0.03969611972570419,
+                -0.049936000257730487
+            ]
+        },
+        {
+            "stateKey": "cp:5|dist:medium|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.1378190815448761,
+                -0.07344142347574234,
+                -0.1465914249420166,
+                -0.1606932282447815
+            ]
+        },
+        {
+            "stateKey": "cp:5|dist:far|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.3977166712284088,
+                0.4405685365200043,
+                0.40180471539497378,
+                0.42038679122924807
+            ]
+        },
+        {
+            "stateKey": "cp:5|dist:far|angle:forward|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.07098503410816193,
+                0.058300867676734927,
+                0.3139263391494751,
+                0.09848040342330933
+            ]
+        },
+        {
+            "stateKey": "cp:5|dist:medium|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.03733554854989052,
+                0.0301292035728693,
+                0.01959148235619068,
+                0.021437063813209535
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:far|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.09870581328868866,
+                -0.09642349183559418,
+                0.1339191347360611,
+                -0.03451070189476013
+            ]
+        },
+        {
+            "stateKey": "cp:0|dist:close|angle:forward|bomb:True|fsm:Racing",
+            "actionValues": [
+                3.056414842605591,
+                33.172515869140628,
+                9.238593101501465,
+                4.591483116149902
+            ]
+        },
+        {
+            "stateKey": "cp:0|dist:close|angle:right|bomb:True|fsm:Racing",
+            "actionValues": [
+                10.598119735717774,
+                46.36861801147461,
+                0.0,
+                14.577610969543457
+            ]
+        },
+        {
+            "stateKey": "cp:3|dist:medium|angle:forward|bomb:True|fsm:AvoidDanger",
+            "actionValues": [
+                0.6901748776435852,
+                3.635525703430176,
+                0.6867808103561401,
+                1.0934191942214966
+            ]
+        },
+        {
+            "stateKey": "cp:5|dist:medium|angle:forward|bomb:False|fsm:Collect",
+            "actionValues": [
+                2.5449588298797609,
+                4.651932239532471,
+                8.525813102722168,
+                3.7685208320617677
+            ]
+        },
+        {
+            "stateKey": "cp:5|dist:medium|angle:forward|bomb:True|fsm:Collect",
+            "actionValues": [
+                0.03923095390200615,
+                0.0,
+                0.01775360107421875,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:5|dist:close|angle:forward|bomb:False|fsm:Collect",
+            "actionValues": [
+                4.312617778778076,
+                12.060229301452637,
+                3.4697132110595705,
+                5.459206581115723
+            ]
+        },
+        {
+            "stateKey": "cp:5|dist:close|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                19.189966201782228,
+                10.51983642578125,
+                14.06722354888916,
+                9.883464813232422
+            ]
+        },
+        {
+            "stateKey": "cp:6|dist:far|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.6015379428863525,
+                0.5405178666114807,
+                0.4670966565608978,
+                0.37770992517471316
+            ]
+        },
+        {
+            "stateKey": "cp:6|dist:far|angle:forward|bomb:False|fsm:Recover",
+            "actionValues": [
+                3.497009038925171,
+                1.4676599502563477,
+                1.4557729959487916,
+                1.2506099939346314
+            ]
+        },
+        {
+            "stateKey": "cp:6|dist:far|angle:forward|bomb:False|fsm:Collect",
+            "actionValues": [
+                1.7252018451690674,
+                4.0298075675964359,
+                1.290632724761963,
+                0.6492723226547241
+            ]
+        },
+        {
+            "stateKey": "cp:6|dist:medium|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.9616743922233582,
+                1.6397398710250855,
+                4.234397888183594,
+                1.1155775785446168
+            ]
+        },
+        {
+            "stateKey": "cp:6|dist:medium|angle:forward|bomb:False|fsm:Collect",
+            "actionValues": [
+                3.4627795219421388,
+                6.222384929656982,
+                2.2747135162353517,
+                2.3313984870910646
+            ]
+        },
+        {
+            "stateKey": "cp:6|dist:close|angle:forward|bomb:False|fsm:Collect",
+            "actionValues": [
+                1.915583610534668,
+                11.614412307739258,
+                3.147411823272705,
+                2.4228341579437258
+            ]
+        },
+        {
+            "stateKey": "cp:6|dist:close|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                20.099552154541017,
+                10.661070823669434,
+                11.088236808776856,
+                7.03785514831543
+            ]
+        },
+        {
+            "stateKey": "cp:6|dist:close|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                6.347683429718018,
+                -0.03638198971748352,
+                5.973082065582275,
+                5.651397228240967
+            ]
+        },
+        {
+            "stateKey": "cp:7|dist:medium|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                2.0529611110687258,
+                5.552270889282227,
+                1.0705196857452393,
+                1.615030288696289
+            ]
+        },
+        {
+            "stateKey": "cp:7|dist:close|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                6.888926982879639,
+                6.482461452484131,
+                6.585513591766357,
+                7.021272659301758
+            ]
+        },
+        {
+            "stateKey": "cp:8|dist:medium|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                3.7367007732391359,
+                0.5255858898162842,
+                1.8374780416488648,
+                0.6552202701568604
+            ]
+        },
+        {
+            "stateKey": "cp:8|dist:close|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                3.976043701171875,
+                10.305365562438965,
+                6.545891761779785,
+                3.052699089050293
+            ]
+        },
+        {
+            "stateKey": "cp:9|dist:medium|angle:right|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.08388430625200272,
+                0.1362273395061493,
+                0.25415393710136416,
+                0.05461785942316055
+            ]
+        },
+        {
+            "stateKey": "cp:9|dist:close|angle:right|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.13228332996368409,
+                0.0,
+                0.3655537962913513,
+                0.35537436604499819
+            ]
+        },
+        {
+            "stateKey": "cp:9|dist:close|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.0,
+                0.3669135570526123,
+                5.591551780700684,
+                0.8322575688362122
+            ]
+        },
+        {
+            "stateKey": "cp:10|dist:medium|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.04371337965130806,
+                0.22758905589580537,
+                0.42437073588371279,
+                0.38462767004966738
+            ]
+        },
+        {
+            "stateKey": "cp:10|dist:medium|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.11340699344873429,
+                0.0,
+                0.15464027225971223,
+                0.02826233021914959
+            ]
+        },
+        {
+            "stateKey": "cp:10|dist:close|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.5086348056793213,
+                3.1754727363586427,
+                5.8029022216796879,
+                1.1409838199615479
+            ]
+        },
+        {
+            "stateKey": "cp:11|dist:medium|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.8146083354949951,
+                0.43011564016342165,
+                0.6329169273376465,
+                0.3132743835449219
+            ]
+        },
+        {
+            "stateKey": "cp:11|dist:close|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                6.0527262687683109,
+                0.885588526725769,
+                3.3859832286834719,
+                0.8720679879188538
+            ]
+        },
+        {
+            "stateKey": "cp:12|dist:medium|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.19434082508087159,
+                0.21345694363117219,
+                0.045942213386297229,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:12|dist:medium|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.22791887819766999,
+                0.0,
+                0.07308956980705261,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:12|dist:close|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.0,
+                3.2642903327941896,
+                0.12948347628116609,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:12|dist:close|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.03494890034198761,
+                -0.01912536658346653,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:12|dist:close|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.01912231557071209,
+                0.0,
+                -0.01918335072696209,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:12|dist:medium|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.04190940409898758,
+                -0.0191497802734375,
+                -0.036376647651195529,
+                -0.01918335072696209
+            ]
+        },
+        {
+            "stateKey": "cp:12|dist:far|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.04315568506717682,
+                0.029298149049282075,
+                0.045748185366392139,
+                0.043039705604314807
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:close|angle:left|bomb:False|fsm:Collect",
+            "actionValues": [
+                0.0,
+                3.586697578430176,
+                7.2794599533081059,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:close|angle:left|bomb:False|fsm:Collect",
+            "actionValues": [
+                4.126661777496338,
+                2.5663108825683595,
+                3.0219452381134035,
+                2.677354574203491
+            ]
+        },
+        {
+            "stateKey": "cp:8|dist:medium|angle:right|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.0,
+                0.0,
+                0.10126349329948425,
+                0.3887650668621063
+            ]
+        },
+        {
+            "stateKey": "cp:9|dist:medium|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.12125523388385773,
+                -0.11701152473688126,
+                -0.1289798617362976,
+                -0.11884964257478714
+            ]
+        },
+        {
+            "stateKey": "cp:9|dist:medium|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.12280105799436569,
+                -0.08525469899177551,
+                -0.0860438421368599,
+                -0.0774281769990921
+            ]
+        },
+        {
+            "stateKey": "cp:9|dist:medium|angle:forward|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.05247402936220169,
+                0.10749124735593796,
+                0.05011788383126259,
+                0.015333624556660653
+            ]
+        },
+        {
+            "stateKey": "cp:9|dist:far|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.08961059898138046,
+                -0.108713299036026,
+                -0.07393115013837815,
+                -0.10982999205589295
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:medium|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                1.112426519393921,
+                0.5852454304695129,
+                0.15371689200401307,
+                0.08754627406597138
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:medium|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.039879344403743747,
+                0.3543734848499298,
+                0.25049158930778506,
+                0.05716988816857338
+            ]
+        },
+        {
+            "stateKey": "cp:4|dist:medium|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                10.129691123962403,
+                4.55141544342041,
+                2.33373761177063,
+                3.732558012008667
+            ]
+        },
+        {
+            "stateKey": "cp:7|dist:medium|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.0,
+                0.0,
+                1.234943151473999,
+                3.185499906539917
+            ]
+        },
+        {
+            "stateKey": "cp:9|dist:medium|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.2429058849811554,
+                0.13705576956272126,
+                0.2910207509994507,
+                0.13503630459308625
+            ]
+        },
+        {
+            "stateKey": "cp:9|dist:close|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.5319083333015442,
+                2.749767541885376,
+                0.0,
+                0.6124169230461121
+            ]
+        },
+        {
+            "stateKey": "cp:11|dist:medium|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.0,
+                0.0,
+                0.0,
+                0.07091440260410309
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:medium|angle:forward|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.9216314554214478,
+                0.40714123845100405,
+                0.2864309251308441,
+                0.41688117384910586
+            ]
+        },
+        {
+            "stateKey": "cp:3|dist:close|angle:forward|bomb:True|fsm:AvoidDanger",
+            "actionValues": [
+                0.0,
+                5.8232245445251469,
+                0.7725521326065064,
+                0.8012054562568665
+            ]
+        },
+        {
+            "stateKey": "cp:4|dist:far|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                1.372440218925476,
+                1.361035943031311,
+                5.7664361000061039,
+                1.4564727544784547
+            ]
+        },
+        {
+            "stateKey": "cp:4|dist:medium|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                4.053426742553711,
+                7.916313648223877,
+                1.4733359813690186,
+                2.2331597805023195
+            ]
+        },
+        {
+            "stateKey": "cp:7|dist:close|angle:right|bomb:False|fsm:Racing",
+            "actionValues": [
+                -0.01914520375430584,
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:7|dist:medium|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.2542392909526825,
+                -0.04149084910750389,
+                -0.25245508551597597,
+                -0.2537219226360321
+            ]
+        },
+        {
+            "stateKey": "cp:7|dist:far|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.15524613857269288,
+                0.14626845717430116,
+                0.15187865495681764,
+                0.17896440625190736
+            ]
+        },
+        {
+            "stateKey": "cp:7|dist:medium|angle:forward|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.47402429580688479,
+                0.03781654313206673,
+                0.07108725607395172,
+                0.013667254708707333
+            ]
+        },
+        {
+            "stateKey": "cp:7|dist:far|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.22411797940731049,
+                -0.22415806353092194,
+                -0.24291162192821504,
+                -0.17126412689685822
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:far|angle:forward|bomb:False|fsm:Recover",
+            "actionValues": [
+                1.0305060148239136,
+                1.2758207321166993,
+                0.8239774703979492,
+                0.6703827977180481
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:far|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.3816569447517395,
+                0.45393824577331545,
+                1.0240222215652466,
+                0.4381318688392639
+            ]
+        },
+        {
+            "stateKey": "cp:6|dist:close|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.01914367638528347,
+                -0.02002030424773693,
+                -0.03178659826517105,
+                -0.01584581285715103
+            ]
+        },
+        {
+            "stateKey": "cp:6|dist:medium|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.04042815417051315,
+                -0.029264656826853753,
+                -0.06471665948629379,
+                -0.05595141649246216
+            ]
+        },
+        {
+            "stateKey": "cp:9|dist:medium|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.0,
+                0.9875158071517944,
+                0.10166328400373459,
+                0.22112902998924256
+            ]
+        },
+        {
+            "stateKey": "cp:11|dist:far|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.0,
+                0.0,
+                0.06844673305749893,
+                0.012387909926474095
+            ]
+        },
+        {
+            "stateKey": "cp:13|dist:far|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.0,
+                0.0,
+                0.19618041813373567,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:13|dist:medium|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.0,
+                0.0,
+                0.0,
+                0.17133209109306336
+            ]
+        },
+        {
+            "stateKey": "cp:13|dist:medium|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.07763061672449112,
+                0.0,
+                0.0,
+                0.06619568169116974
+            ]
+        },
+        {
+            "stateKey": "cp:13|dist:close|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.12818430364131928,
+                0.0,
+                0.1582784354686737,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:13|dist:close|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.0,
+                0.0,
+                3.0688722133636476,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:14|dist:far|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.0,
+                0.0,
+                0.094970703125,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:14|dist:medium|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.04740295931696892,
+                0.06841966509819031,
+                0.06584096699953079,
+                0.19995346665382386
+            ]
+        },
+        {
+            "stateKey": "cp:14|dist:close|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.020023953169584276,
+                0.06460583955049515,
+                0.0,
+                0.03750649094581604
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:close|angle:right|bomb:False|fsm:Racing",
+            "actionValues": [
+                3.326004981994629,
+                3.2560360431671144,
+                3.73490834236145,
+                3.2901883125305177
+            ]
+        },
+        {
+            "stateKey": "cp:3|dist:medium|angle:forward|bomb:True|fsm:Collect",
+            "actionValues": [
+                0.3613166809082031,
+                0.21515494585037232,
+                2.431833505630493,
+                0.33248212933540347
+            ]
+        },
+        {
+            "stateKey": "cp:7|dist:close|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.9302576780319214,
+                1.348976969718933,
+                0.34434273838996889,
+                0.27189716696739199
+            ]
+        },
+        {
+            "stateKey": "cp:7|dist:far|angle:forward|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.4555674195289612,
+                0.20739097893238069,
+                0.10633376240730286,
+                0.09479551762342453
+            ]
+        },
+        {
+            "stateKey": "cp:3|dist:medium|angle:left|bomb:True|fsm:AvoidDanger",
+            "actionValues": [
+                -0.22935210168361665,
+                -0.41074568033218386,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:6|dist:medium|angle:left|bomb:False|fsm:Collect",
+            "actionValues": [
+                0.0,
+                0.07322980463504791,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:close|angle:left|bomb:True|fsm:AvoidDanger",
+            "actionValues": [
+                0.5181843638420105,
+                0.0,
+                0.04453466460108757,
+                -0.4630219340324402
+            ]
+        },
+        {
+            "stateKey": "cp:7|dist:close|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.07839815318584442,
+                -0.11193263530731201,
+                -0.07316585630178452,
+                -0.08792388439178467
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:close|angle:forward|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.015589007176458836,
+                0.06898762285709381,
+                0.0,
+                0.03244002163410187
+            ]
+        },
+        {
+            "stateKey": "cp:5|dist:medium|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.44396671652793887,
+                3.3173043727874758,
+                0.1243835836648941,
+                0.2717461884021759
+            ]
+        },
+        {
+            "stateKey": "cp:3|dist:close|angle:forward|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.0,
+                0.031560517847537997,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:5|dist:far|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.03614120930433273,
+                0.055065400898456576,
+                0.3411932587623596,
+                0.00999645795673132
+            ]
+        },
+        {
+            "stateKey": "cp:5|dist:far|angle:forward|bomb:False|fsm:Collect",
+            "actionValues": [
+                0.0,
+                0.29012343287467959,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:8|dist:close|angle:right|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.0,
+                2.709019422531128,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:9|dist:far|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.04028218239545822,
+                0.2056540697813034,
+                0.5575920343399048,
+                0.13432253897190095
+            ]
+        },
+        {
+            "stateKey": "cp:9|dist:far|angle:forward|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.08261408656835556,
+                0.18534334003925324,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:7|dist:medium|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.03158370032906532,
+                -0.03724919259548187,
+                -0.0423780232667923,
+                -0.0405459888279438
+            ]
+        },
+        {
+            "stateKey": "cp:3|dist:medium|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                5.376585006713867,
+                1.813567876815796,
+                1.7576324939727784,
+                1.695589542388916
+            ]
+        },
+        {
+            "stateKey": "cp:3|dist:far|angle:forward|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.08969124406576157,
+                0.34963133931159975,
+                0.09742050617933274,
+                0.10287795215845108
+            ]
+        },
+        {
+            "stateKey": "cp:4|dist:far|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.0,
+                0.28714630007743838,
+                0.07904061675071717,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:6|dist:far|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.0,
+                0.0,
+                0.1559460610151291,
+                0.7055661678314209
+            ]
+        },
+        {
+            "stateKey": "cp:8|dist:medium|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.20051509141921998,
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:9|dist:close|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.0,
+                0.0,
+                0.0,
+                -0.0191497802734375
+            ]
+        },
+        {
+            "stateKey": "cp:9|dist:close|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.04753170162439346,
+                -0.026909522712230684,
+                -0.025180475786328317,
+                -0.012475821189582348
+            ]
+        },
+        {
+            "stateKey": "cp:4|dist:close|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.01916351355612278,
+                -0.0007278973935171962,
+                0.0564541220664978,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:4|dist:medium|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.006920053623616695,
+                -0.02934964746236801,
+                0.11851220577955246,
+                -0.02642054297029972
+            ]
+        },
+        {
+            "stateKey": "cp:4|dist:far|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.04303395748138428,
+                0.04452551156282425,
+                0.047131896018981937,
+                0.07494613528251648
+            ]
+        },
+        {
+            "stateKey": "cp:4|dist:medium|angle:forward|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.027125339955091478,
+                0.8696060180664063,
+                0.07491666078567505,
+                0.03075503557920456
+            ]
+        },
+        {
+            "stateKey": "cp:4|dist:medium|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.012983719818294049,
+                -0.004675984848290682,
+                0.236729696393013,
+                0.026964819058775903
+            ]
+        },
+        {
+            "stateKey": "cp:4|dist:far|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.24454498291015626,
+                0.45185497403144839,
+                0.2764332890510559,
+                0.2787444293498993
+            ]
+        },
+        {
+            "stateKey": "cp:0|dist:close|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.0,
+                3.8290412425994875,
+                0.0,
+                18.486835479736329
+            ]
+        },
+        {
+            "stateKey": "cp:5|dist:close|angle:right|bomb:False|fsm:Racing",
+            "actionValues": [
+                2.3437254428863527,
+                1.309353232383728,
+                0.4980643689632416,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:5|dist:close|angle:left|bomb:False|fsm:Collect",
+            "actionValues": [
+                0.2516532242298126,
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:4|dist:close|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.9003515243530273,
+                3.631941318511963,
+                1.3830113410949708,
+                1.1389129161834717
+            ]
+        },
+        {
+            "stateKey": "cp:4|dist:far|angle:forward|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.2203497588634491,
+                0.38405680656433108,
+                0.8509186506271362,
+                0.2924908697605133
+            ]
+        },
+        {
+            "stateKey": "cp:8|dist:close|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.0,
+                0.0,
+                -0.019134521484375,
+                -0.01914062537252903
+            ]
+        },
+        {
+            "stateKey": "cp:8|dist:close|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.019134521484375,
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:8|dist:medium|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.05192004516720772,
+                -0.01915283314883709,
+                0.058792244642972949,
+                -0.01342467125505209
+            ]
+        },
+        {
+            "stateKey": "cp:8|dist:far|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.031194910407066346,
+                0.15923108160495759,
+                0.04878038167953491,
+                0.04939216375350952
+            ]
+        },
+        {
+            "stateKey": "cp:8|dist:far|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.01416714210063219,
+                0.09288032352924347,
+                0.0334804393351078,
+                0.18621130287647248
+            ]
+        },
+        {
+            "stateKey": "cp:8|dist:far|angle:forward|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.3117750287055969,
+                0.0740332305431366,
+                0.04599882289767265,
+                0.09161988645792008
+            ]
+        },
+        {
+            "stateKey": "cp:8|dist:medium|angle:forward|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.06729964911937714,
+                0.22497382760047913,
+                0.05322265625,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:close|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.019172286614775659,
+                -0.037530988454818729,
+                -0.023337703198194505,
+                -0.02084195427596569
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:medium|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.055980417877435687,
+                -0.045985423028469089,
+                -0.06036776676774025,
+                -0.05998402461409569
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:far|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.11902674287557602,
+                0.09083757549524307,
+                -0.040389157831668857,
+                -0.00817146897315979
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:far|angle:forward|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.0,
+                0.20639954507350923,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:medium|angle:forward|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.0,
+                0.18555352091789246,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:medium|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.0,
+                -0.03088020347058773,
+                -0.01914825476706028,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:far|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.1165347620844841,
+                -0.09382505714893341,
+                -0.11071239411830902,
+                -0.07881730794906616
+            ]
+        },
+        {
+            "stateKey": "cp:0|dist:close|angle:left|bomb:True|fsm:Racing",
+            "actionValues": [
+                23.023996353149415,
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:6|dist:far|angle:forward|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.24140913784503938,
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:8|dist:close|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.01917114295065403,
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:8|dist:medium|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.0191497802734375,
+                0.0377655029296875,
+                0.026829982176423074,
+                0.07043030858039856
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:close|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.01915130577981472,
+                0.03269551321864128,
+                0.0,
+                -0.01122894324362278
+            ]
+        },
+        {
+            "stateKey": "cp:5|dist:medium|angle:right|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.0,
+                0.12355013191699982,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:close|angle:left|bomb:True|fsm:Racing",
+            "actionValues": [
+                1.7874841690063477,
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:medium|angle:right|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.38018280267715456,
+                -0.04644457995891571,
+                0.2957138121128082,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:far|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                0.0,
+                0.0,
+                0.018264250829815866,
+                0.0382516123354435
+            ]
+        },
+        {
+            "stateKey": "cp:5|dist:far|angle:right|bomb:False|fsm:Collect",
+            "actionValues": [
+                0.0,
+                0.0,
+                0.1644287109375,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:5|dist:medium|angle:right|bomb:False|fsm:Collect",
+            "actionValues": [
+                0.0,
+                0.545598566532135,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:5|dist:close|angle:right|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.0,
+                0.0,
+                -0.01586882583796978,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:4|dist:close|angle:forward|bomb:True|fsm:AvoidDanger",
+            "actionValues": [
+                1.56944739818573,
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:5|dist:far|angle:left|bomb:False|fsm:Racing",
+            "actionValues": [
+                -0.01915740966796875,
+                0.0,
+                0.0,
+                0.030122673138976098
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:close|angle:right|bomb:False|fsm:Collect",
+            "actionValues": [
+                0.6944030523300171,
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:close|angle:right|bomb:False|fsm:Racing",
+            "actionValues": [
+                -0.019173050299286844,
+                3.4049160480499269,
+                7.895117282867432,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:0|dist:close|angle:right|bomb:False|fsm:Racing",
+            "actionValues": [
+                4.385027885437012,
+                0.0,
+                9.143643379211426,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:3|dist:close|angle:left|bomb:False|fsm:Collect",
+            "actionValues": [
+                1.2802950143814088,
+                0.0,
+                0.19603857398033143,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:3|dist:medium|angle:right|bomb:False|fsm:Racing",
+            "actionValues": [
+                2.140820264816284,
+                0.0,
+                0.4068707823753357,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:medium|angle:right|bomb:False|fsm:Collect",
+            "actionValues": [
+                0.0,
+                1.0977652072906495,
+                0.10171245783567429,
+                0.1179986521601677
+            ]
+        },
+        {
+            "stateKey": "cp:6|dist:close|angle:left|bomb:False|fsm:Collect",
+            "actionValues": [
+                0.8567282557487488,
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:5|dist:medium|angle:forward|bomb:False|fsm:Recover",
+            "actionValues": [
+                0.005477789789438248,
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:4|dist:close|angle:left|bomb:False|fsm:Recover",
+            "actionValues": [
+                -0.03590022027492523,
+                0.0005966617609374225,
+                -0.030187997967004777,
+                -0.03181620314717293
+            ]
+        },
+        {
+            "stateKey": "cp:3|dist:medium|angle:right|bomb:False|fsm:Collect",
+            "actionValues": [
+                1.9448896646499634,
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:far|angle:right|bomb:False|fsm:Racing",
+            "actionValues": [
+                -0.01314366515725851,
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:medium|angle:left|bomb:True|fsm:AvoidDanger",
+            "actionValues": [
+                0.0,
+                0.0,
+                0.0009292602771893144,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:close|angle:left|bomb:True|fsm:AvoidDanger",
+            "actionValues": [
+                -0.0021697997581213714,
+                0.0012710571754723788,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:1|dist:close|angle:forward|bomb:True|fsm:AvoidDanger",
+            "actionValues": [
+                1.649943232536316,
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:far|angle:left|bomb:True|fsm:AvoidDanger",
+            "actionValues": [
+                -0.4304445683956146,
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:medium|angle:forward|bomb:True|fsm:Racing",
+            "actionValues": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "stateKey": "cp:2|dist:far|angle:forward|bomb:False|fsm:Collect",
+            "actionValues": [
+                0.11289000511169434,
+                0.0,
+                0.0,
+                0.0
+            ]
+        }
+    ]
+}

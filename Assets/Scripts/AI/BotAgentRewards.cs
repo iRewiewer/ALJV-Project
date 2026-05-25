@@ -10,7 +10,7 @@ public partial class BotAgent
         collectedCoins.Add(coinObject);
 
         if (rewardSystem != null)
-            rewardSystem.AddReward(rewardSystem.coinReward * value, "Coin", true);
+            rewardSystem.AddCoinReward(value);
 
         if (nearestCoin != null && coinObject != null && nearestCoin.IsChildOf(coinObject.transform))
             nearestCoin = null;
@@ -40,6 +40,9 @@ public partial class BotAgent
 
     private void TryCompleteCurrentCheckpointByOverlap()
     {
+        if (HasPassedAllCheckpoints())
+            return;
+
         if (currentTarget == null)
             return;
 
@@ -51,6 +54,27 @@ public partial class BotAgent
 
         if (botBounds.Intersects(checkpointBounds))
             TryCompleteCheckpointIndex(currentCheckpointIndex);
+    }
+
+    private bool TryCompleteFinishLineByOverlap()
+    {
+        if (!HasPassedAllCheckpoints() || finishLinePassed)
+            return false;
+
+        Transform finishTarget = finishLineTarget != null ? finishLineTarget : currentTarget;
+        if (finishTarget == null)
+            return false;
+
+        if (!TryGetBotBounds(out Bounds botBounds))
+            return false;
+
+        if (!TryGetCheckpointPassBounds(finishTarget, out Bounds finishBounds))
+            return false;
+
+        if (!botBounds.Intersects(finishBounds))
+            return false;
+
+        return TryCompleteFinishLine();
     }
 
     private bool TryGetBotBounds(out Bounds botBounds)
@@ -149,6 +173,9 @@ public partial class BotAgent
         if (checkpoints == null || checkpoints.Length == 0)
             return false;
 
+        if (HasPassedAllCheckpoints())
+            return false;
+
         if (checkpointIndex != currentCheckpointIndex)
         {
             if (checkpointIndex == lastSafeCheckpointIndex)
@@ -193,6 +220,9 @@ public partial class BotAgent
 
     public bool TryCompleteCheckpointTransform(Transform checkpointTransform)
     {
+        if (HasPassedAllCheckpoints())
+            return false;
+
         if (checkpointTransform == null || currentTarget == null)
             return false;
 

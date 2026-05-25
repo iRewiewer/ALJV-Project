@@ -33,8 +33,11 @@ public partial class BotAgent : MonoBehaviour
     public float recoveryReadyAngle = 35f;
     public float recoveryMinCheckpointDistance = 140f;
 
+    [Header("Finish Line")]
+    public Transform finishLineTarget;
+
     [Header("Coin Guidance")]
-    public float coinInfluence = 0.12f;
+    public float coinInfluence = 0f;
     public float minCoinDistance = 25f;
     public float maxCoinAngle = 45f;
 
@@ -51,6 +54,7 @@ public partial class BotAgent : MonoBehaviour
     public Transform nearestCoin;
     public Transform nearestBomb;
     public bool recoveringCheckpoint;
+    public bool finishLinePassed;
     public Vector3 recoveryApproachPoint;
 
     private Bot bot;
@@ -67,6 +71,7 @@ public partial class BotAgent : MonoBehaviour
 
     private readonly HashSet<GameObject> collectedCoins = new HashSet<GameObject>();
     private readonly HashSet<GameObject> consumedBombs = new HashSet<GameObject>();
+    private readonly HashSet<GameObject> disabledEpisodeObjects = new HashSet<GameObject>();
 
     private void Awake()
     {
@@ -107,6 +112,8 @@ public partial class BotAgent : MonoBehaviour
         ScanEnvironment();
         TryHandlePickupsAndHazardsByOverlap();
         TryCompleteCurrentCheckpointByOverlap();
+        if (TryCompleteFinishLineByOverlap())
+            return;
         UpdateState();
         ApplyProgressReward();
         TickSelectedBrain();
@@ -118,6 +125,14 @@ public partial class BotAgent : MonoBehaviour
 
         if (!HasPath())
             return;
+
+        if (HasPassedAllCheckpoints())
+        {
+            if (finishLineTarget != null)
+                currentTarget = finishLineTarget;
+
+            return;
+        }
 
         currentCheckpointIndex = Mathf.Clamp(currentCheckpointIndex, 0, checkpoints.Length - 1);
         currentTarget = checkpoints[currentCheckpointIndex];
@@ -225,6 +240,86 @@ public partial class BotAgent : MonoBehaviour
         }
 
         rlBrain.Tick(this, bot, rewardSystem);
+    }
+
+    public void ResetTrainingEpisode()
+    {
+        ReactivateEpisodeObjects();
+
+        collectedCoins.Clear();
+        consumedBombs.Clear();
+
+        currentCheckpointIndex = 0;
+        passedCheckpointCount = 0;
+        lastSafeCheckpointIndex = 0;
+        recoveringCheckpoint = false;
+        finishLinePassed = false;
+        recoveryApproachPoint = Vector3.zero;
+        currentState = BotState.Racing;
+        nearestCheckpoint = null;
+        nearestCoin = null;
+        nearestBomb = null;
+
+        transform.position = startPosition;
+        transform.rotation = startRotation;
+
+        if (bot == null)
+            bot = GetComponent<Bot>();
+
+        if (bot != null)
+        {
+            bot.ResetSpeedToDefault();
+            bot.SetAiInput(0f, 0f, true, false);
+        }
+
+        RefreshCurrentTarget();
+
+        previousDistanceToTarget = currentTarget != null
+            ? Vector3.Distance(transform.position, GetCurrentTargetPosition())
+            : 0f;
+
+        if (rewardSystem == null)
+            rewardSystem = GetComponent<BotRewardSystem>();
+
+        if (rewardSystem != null)
+            rewardSystem.ResetReward();
+    }
+
+    public void SetFinishLineTarget(Transform target)
+    {
+        finishLineTarget = target;
+
+        if (HasPassedAllCheckpoints() && !finishLinePassed)
+            RefreshCurrentTarget();
+    }
+
+    public bool TryPassFinishLine()
+    {
+        if (!HasPassedAllCheckpoints() || finishLinePassed)
+            return false;
+
+        finishLinePassed = true;
+        return true;
+    }
+
+    public bool TryCompleteFinishLine()
+    {
+        if (!TryPassFinishLine())
+            return false;
+
+        if (rlBrain == null)
+            rlBrain = GetComponent<RLBotBrain>();
+
+        if (rlBrain != null && rlBrain.CompleteRaceAtFinishLine(this))
+            return true;
+
+        ResetTrainingEpisode();
+        return true;
+    }
+
+    public bool HasFinishedTrainingRace()
+    {
+        return HasPassedAllCheckpoints() && finishLinePassed;
     }
 
     private void UpdateState()
